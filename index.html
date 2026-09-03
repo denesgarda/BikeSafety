@@ -1,0 +1,919 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Other Half — E-Bike Safety in Irvine</title>
+<meta name="description" content="Irvine wrote the rules for e-bikes. Nobody has taught the kids how to ride them. Research and a proposal for the Irvine City Council, by Adriana.">
+<meta property="og:title" content="The Other Half — E-Bike Safety in Irvine">
+<meta property="og:description" content="Irvine wrote the rules for e-bikes. Nobody has taught the kids how to ride them.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=DM+Mono:wght@400;500&family=Source+Serif+4:opsz,wght@8..60,400..600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --asphalt:#16181c;
+  --asphalt-lift:#1e2127;
+  --asphalt-line:#2b2f37;
+  --thermo:#f2f4f0;
+  --thermo-dim:#9aa1ab;
+  --lane:#00c06a;
+  --amber:#ffb020;
+  --sign-red:#e4442e;
+
+  --rail:56px;
+  --navh:60px;
+  --pad:clamp(22px,4.5vw,80px);
+  --measure:68ch;
+
+  --display:"Archivo","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --body:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --mono:"DM Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth; overflow-x:hidden}
+body{
+  margin:0; background:var(--asphalt); color:var(--thermo);
+  font-family:var(--body); font-size:18px; line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+@media(min-width:1100px){body{font-size:19px}}
+
+/* ============ the bike lane rail (signature + progress) ============ */
+.rail{
+  position:fixed; top:0; left:0; bottom:0; width:var(--rail);
+  background:linear-gradient(180deg,rgba(0,192,106,.15),rgba(0,192,106,.09));
+  border-right:1px solid var(--asphalt-line);
+  z-index:80; pointer-events:none;
+}
+.rail::before{
+  content:""; position:absolute; left:50%; top:0; bottom:0; width:3px; margin-left:-1.5px;
+  background:repeating-linear-gradient(180deg,
+    rgba(242,244,240,.5) 0 20px, transparent 20px 38px);
+}
+.rider{
+  position:absolute; left:50%; top:0; width:30px; height:30px;
+  margin-left:-15px; margin-top:-15px;
+  transform:translateY(6vh);
+  transition:transform .3s linear;
+  will-change:transform;
+}
+.rider svg{display:block; width:100%; height:100%}
+
+/* ============ top navigation ============ */
+.nav{
+  position:sticky; top:0; z-index:70;
+  height:var(--navh);
+  margin-left:var(--rail);
+  display:flex; align-items:center; gap:20px;
+  padding:0 var(--pad);
+  background:rgba(22,24,28,.92);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--asphalt-line);
+}
+.wordmark{
+  font-family:var(--display); font-stretch:118%; font-weight:800;
+  font-size:15px; letter-spacing:.01em; text-transform:uppercase;
+  color:var(--thermo); text-decoration:none; white-space:nowrap;
+  display:flex; align-items:center; gap:9px;
+}
+.wordmark::before{
+  content:""; width:20px; height:0; border-top:3px solid var(--lane);
+}
+.navlinks{
+  display:flex; gap:22px; margin-left:auto; align-items:center;
+  font-family:var(--mono); font-size:12px; letter-spacing:.09em; text-transform:uppercase;
+}
+.navlinks a{color:var(--thermo-dim); text-decoration:none; white-space:nowrap}
+.navlinks a:hover,.navlinks a:focus-visible{color:var(--lane)}
+.presentbtn{
+  font-family:var(--mono); font-size:12px; letter-spacing:.09em; text-transform:uppercase;
+  color:var(--asphalt); background:var(--lane); border:0;
+  padding:8px 14px; cursor:pointer; white-space:nowrap;
+}
+.presentbtn:hover{background:#20d67f}
+@media(max-width:900px){
+  .navlinks a{display:none}
+  .navlinks{margin-left:auto}
+}
+
+/* ============ sections ============ */
+main{margin-left:var(--rail)}
+section{
+  padding:clamp(56px,9vh,110px) var(--pad);
+  border-bottom:1px solid var(--asphalt-line);
+  scroll-margin-top:var(--navh);
+}
+.inner{width:100%; max-width:1120px; margin:0 auto}
+
+.eyebrow{
+  font-family:var(--mono); font-size:12px;
+  letter-spacing:.19em; text-transform:uppercase;
+  color:var(--thermo-dim); margin:0 0 18px;
+  display:flex; align-items:center; gap:13px;
+}
+.eyebrow::before{content:""; width:28px; height:0; flex:none; border-top:3px solid var(--lane)}
+
+h1,h2{
+  font-family:var(--display); font-weight:800; font-stretch:122%;
+  line-height:.95; letter-spacing:-.02em; text-transform:uppercase; margin:0;
+}
+h1{font-size:clamp(46px,8vw,124px); line-height:.9}
+h2{font-size:clamp(26px,3vw,44px); max-width:22ch}
+h3{
+  font-family:var(--display); font-stretch:112%; font-weight:700;
+  font-size:clamp(17px,1.35vw,22px); letter-spacing:-.005em;
+  margin:0 0 10px; text-transform:uppercase;
+}
+h4{
+  font-family:var(--display); font-stretch:110%; font-weight:700;
+  font-size:clamp(16px,1.2vw,20px); margin:0 0 8px; letter-spacing:-.005em;
+}
+strong{font-weight:600; color:#fff}
+a{color:var(--lane)}
+
+/* prose: the reading layer, hidden when projecting */
+.prose{margin-top:clamp(26px,3.5vh,40px)}
+.prose p{margin:0 0 1.1em; max-width:var(--measure)}
+.prose p:last-child{margin-bottom:0}
+.lede{
+  font-size:clamp(19px,1.6vw,25px); line-height:1.45;
+  color:var(--thermo); max-width:52ch;
+}
+
+/* stage: the projected layer, always visible */
+.stage{margin-top:clamp(26px,3.5vh,40px)}
+
+.dash{border:0; height:0; border-top:3px dashed var(--asphalt-line); margin:clamp(30px,4vh,48px) 0}
+
+/* ============ hero ============ */
+#hero{border-bottom:1px solid var(--asphalt-line)}
+#hero .deck{
+  font-family:var(--body);
+  font-size:clamp(20px,2.1vw,32px); line-height:1.3;
+  max-width:24ch; margin:clamp(24px,3.4vh,38px) 0 0;
+}
+#hero .deck em{font-style:normal; color:var(--lane)}
+.herometa{
+  margin-top:clamp(30px,4vh,46px);
+  font-family:var(--mono); font-size:12px;
+  letter-spacing:.15em; text-transform:uppercase; color:var(--thermo-dim);
+  display:flex; gap:8px 24px; flex-wrap:wrap;
+}
+.herocta{display:flex; gap:12px; flex-wrap:wrap; margin-top:clamp(26px,3.5vh,36px)}
+.btn{
+  font-family:var(--mono); font-size:13px; letter-spacing:.09em; text-transform:uppercase;
+  padding:13px 20px; text-decoration:none; display:inline-block;
+}
+.btn-solid{background:var(--lane); color:var(--asphalt)}
+.btn-solid:hover{background:#20d67f}
+.btn-ghost{border:1px solid var(--asphalt-line); color:var(--thermo)}
+.btn-ghost:hover{border-color:var(--lane); color:var(--lane)}
+
+/* ============ stats ============ */
+.stat-row{display:flex; flex-wrap:wrap; gap:clamp(28px,5vw,84px)}
+.stat{flex:1 1 300px; min-width:0}
+.stat .num{
+  font-family:var(--display); font-weight:900; font-stretch:125%;
+  font-size:clamp(66px,8.5vw,138px); line-height:.82;
+  letter-spacing:-.04em; color:var(--amber); display:block;
+}
+.stat .num small{font-size:.42em; letter-spacing:-.02em}
+.stat p{font-size:clamp(16px,1.2vw,20px); line-height:1.4; margin:16px 0 0; max-width:24ch}
+.cite{
+  font-family:var(--mono); font-size:13px; color:var(--thermo-dim);
+  line-height:1.65; max-width:60ch; letter-spacing:.01em;
+}
+
+/* ============ callout panel ============ */
+.panel{
+  background:var(--asphalt-lift); border:1px solid var(--asphalt-line);
+  border-left:4px solid var(--lane);
+  padding:clamp(22px,2.4vw,32px);
+  margin:clamp(26px,3.5vh,40px) 0;
+}
+.panel > :last-child{margin-bottom:0}
+.panel p{max-width:none}
+
+.classlist{list-style:none; margin:18px 0 0; padding:0; display:grid; gap:0}
+.classlist li{
+  display:grid; grid-template-columns:auto 1fr; gap:6px 18px;
+  padding:13px 0; border-top:1px solid var(--asphalt-line);
+  align-items:baseline;
+}
+.classlist li:first-child{border-top:0}
+.classlist .cname{
+  font-family:var(--display); font-stretch:110%; font-weight:700;
+  text-transform:uppercase; font-size:15px; white-space:nowrap; color:var(--thermo);
+}
+.classlist .cdesc{font-size:16px; color:var(--thermo-dim); line-height:1.5}
+
+/* ============ ordinance list ============ */
+.ord-list{list-style:none; margin:0; padding:0}
+.ord-list li{
+  display:flex; gap:16px; align-items:baseline; flex-wrap:wrap;
+  padding:15px 0; border-top:1px solid var(--asphalt-line);
+  font-size:clamp(16px,1.2vw,21px);
+}
+.ord-list li:last-child{border-bottom:1px solid var(--asphalt-line)}
+.ord-list .mk{
+  font-family:var(--mono); font-size:12px; color:var(--lane);
+  letter-spacing:.1em; text-transform:uppercase; flex:none; min-width:76px;
+}
+.pullquote{border-left:6px solid var(--sign-red); padding:4px 0 4px clamp(18px,2vw,30px); margin:0}
+.pullquote q{
+  font-family:var(--display); font-weight:800; font-stretch:118%;
+  font-size:clamp(28px,3.2vw,48px); line-height:1; letter-spacing:-.02em;
+  text-transform:uppercase; color:var(--sign-red); quotes:none; display:block;
+}
+.pullquote footer{
+  font-family:var(--mono); font-size:12px; letter-spacing:.11em; text-transform:uppercase;
+  color:var(--thermo-dim); margin-top:16px;
+}
+.two{display:grid; grid-template-columns:1fr; gap:clamp(26px,3.5vw,56px); align-items:start}
+@media(min-width:900px){.two{grid-template-columns:1.05fr .95fr}}
+
+/* ============ the gap bar ============ */
+.gapbar{display:grid; grid-template-columns:1fr; gap:13px}
+@media(min-width:820px){.gapbar{grid-template-columns:1fr 1.8fr}}
+.seg{padding:20px clamp(16px,1.8vw,26px)}
+.seg .lbl{font-family:var(--mono); font-size:11px; letter-spacing:.17em; text-transform:uppercase; margin-bottom:9px}
+.seg .val{
+  font-family:var(--display); font-weight:800; font-stretch:118%;
+  font-size:clamp(17px,1.7vw,27px); line-height:1.06;
+  text-transform:uppercase; letter-spacing:-.01em;
+}
+.seg-done{border:3px solid var(--asphalt-line); background:var(--asphalt-lift)}
+.seg-done .lbl,.seg-done .val{color:var(--thermo-dim)}
+.seg-open{border:3px dashed var(--lane); background:rgba(0,192,106,.08)}
+.seg-open .lbl{color:var(--lane)}
+.seg-open .val{color:var(--thermo)}
+
+/* ============ ask cards ============ */
+.cards{display:grid; grid-template-columns:1fr; gap:clamp(14px,1.8vw,22px)}
+@media(min-width:820px){.cards{grid-template-columns:1fr 1fr}}
+.card{
+  background:var(--asphalt-lift); border:1px solid var(--asphalt-line);
+  border-top:4px solid var(--lane); padding:clamp(20px,2.2vw,30px);
+}
+.card .kicker{
+  font-family:var(--mono); font-size:11px; letter-spacing:.17em; text-transform:uppercase;
+  color:var(--lane); margin-bottom:12px;
+}
+.card p{font-size:clamp(16px,1.15vw,20px); margin:0}
+
+.footnote{
+  font-family:var(--mono); font-size:13px; color:var(--thermo-dim);
+  line-height:1.7; margin-top:clamp(22px,3vh,32px); max-width:72ch; letter-spacing:.01em;
+}
+
+/* ============ pillars ============ */
+.pillars{display:grid; grid-template-columns:1fr; gap:0}
+@media(min-width:760px){.pillars{grid-template-columns:1fr 1fr}}
+@media(min-width:1180px){.pillars{grid-template-columns:repeat(4,1fr)}}
+.pillar{padding:clamp(20px,1.9vw,28px) clamp(18px,1.7vw,26px); border-top:3px solid var(--lane)}
+@media(min-width:760px){
+  .pillar{border-left:1px solid var(--asphalt-line)}
+  .pillar:nth-child(odd){border-left:0}
+}
+@media(min-width:1180px){
+  .pillar:nth-child(odd){border-left:1px solid var(--asphalt-line)}
+  .pillar:nth-child(4n+1){border-left:0}
+}
+.pillar ul{list-style:none; margin:0; padding:0}
+.pillar li{
+  font-size:16px; line-height:1.45; padding:9px 0;
+  border-top:1px solid var(--asphalt-line); color:var(--thermo-dim);
+}
+.pillar li:first-child{border-top:0}
+
+/* ============ options table ============ */
+.tablewrap{overflow-x:auto; -webkit-overflow-scrolling:touch}
+table{border-collapse:collapse; width:100%; min-width:640px}
+th,td{text-align:left; padding:14px 20px 14px 0; vertical-align:top; border-top:1px solid var(--asphalt-line)}
+th{
+  font-family:var(--mono); font-weight:400; font-size:11px;
+  letter-spacing:.16em; text-transform:uppercase; color:var(--thermo-dim);
+  border-top:0; padding-bottom:11px;
+}
+td.opt{
+  font-family:var(--display); font-stretch:110%; font-weight:700;
+  font-size:clamp(15px,1.05vw,18px); text-transform:uppercase; width:32%;
+}
+td.feas{font-family:var(--mono); font-size:13px; color:var(--thermo-dim); white-space:nowrap}
+td.verdict{font-size:16px; color:var(--thermo-dim)}
+tr.lead td.opt{color:var(--lane)}
+tr.lead td.verdict{color:var(--thermo)}
+
+/* ============ closing ============ */
+#close h2{max-width:17ch}
+#close .sig{
+  font-family:var(--mono); font-size:12px; letter-spacing:.15em; text-transform:uppercase;
+  color:var(--thermo-dim); margin-top:clamp(26px,3.5vh,40px);
+}
+
+/* ============ faq ============ */
+.faq{display:grid; grid-template-columns:1fr; gap:0; margin-top:clamp(26px,3.5vh,40px)}
+.qa{padding:clamp(22px,2.6vh,30px) 0; border-top:1px solid var(--asphalt-line)}
+.qa:first-child{border-top:0; padding-top:0}
+.qa h4{font-size:clamp(17px,1.4vw,23px); text-transform:none; color:var(--thermo); margin-bottom:12px}
+.qa p{margin:0 0 .9em; max-width:var(--measure); color:var(--thermo-dim)}
+.qa p:last-child{margin-bottom:0}
+
+/* ============ sources / about ============ */
+.src-grid{display:grid; grid-template-columns:1fr; gap:clamp(28px,4vw,64px)}
+@media(min-width:900px){.src-grid{grid-template-columns:1fr 1.2fr}}
+.src-list{list-style:none; margin:0; padding:0}
+.src-list li{
+  padding:13px 0; border-top:1px solid var(--asphalt-line);
+  font-family:var(--mono); font-size:13px; line-height:1.7; color:var(--thermo-dim);
+}
+.src-list li:first-child{border-top:0}
+.src-list li b{color:var(--thermo); font-weight:500}
+
+footer.pagefoot{
+  margin-left:var(--rail);
+  padding:clamp(36px,5vh,56px) var(--pad);
+  font-family:var(--mono); font-size:12px; line-height:1.8;
+  color:var(--thermo-dim); letter-spacing:.02em;
+}
+footer.pagefoot .inner{display:flex; gap:12px 40px; flex-wrap:wrap; justify-content:space-between}
+
+/* ============ presentation mode ============ */
+.hint{
+  position:fixed; right:20px; bottom:18px; z-index:90;
+  font-family:var(--mono); font-size:11px; letter-spacing:.13em; text-transform:uppercase;
+  color:var(--thermo-dim); background:rgba(22,24,28,.94);
+  border:1px solid var(--asphalt-line); padding:9px 14px;
+  display:none;
+}
+body.present .hint{display:block}
+body.present .nav{display:none}
+body.present .prose,
+body.present [data-present="skip"],
+body.present footer.pagefoot{display:none}
+body.present section{
+  min-height:100svh; display:flex; flex-direction:column; justify-content:center;
+  padding-top:clamp(48px,7vh,90px); padding-bottom:clamp(48px,7vh,90px);
+}
+body.present h1{font-size:clamp(46px,7.6vw,124px)}
+body.present h2{font-size:clamp(30px,4.6vw,68px); max-width:18ch}
+body.present .stat .num{font-size:clamp(76px,11vw,168px)}
+body.present .pullquote q{font-size:clamp(30px,3.6vw,54px)}
+body.present .seg .val{font-size:clamp(19px,2vw,32px)}
+body.present .card p{font-size:clamp(17px,1.25vw,22px)}
+body.present .pillar li{font-size:clamp(15px,1.05vw,18px)}
+body.present td.verdict{font-size:clamp(15px,1.05vw,19px)}
+body.present .eyebrow{font-size:clamp(11px,.8vw,13px)}
+body:not(.present) .rider{display:none}
+
+kbd{
+  font-family:var(--mono); color:var(--thermo);
+  border:1px solid var(--asphalt-line); border-bottom-width:2px;
+  border-radius:3px; padding:1px 5px; font-size:.92em;
+}
+
+/* ============ a11y ============ */
+:focus-visible{outline:3px solid var(--amber); outline-offset:3px}
+.skip{
+  position:absolute; left:-9999px; top:0; z-index:100;
+  background:var(--amber); color:var(--asphalt); padding:12px 18px;
+  font-family:var(--mono); font-size:13px;
+}
+.skip:focus{left:var(--rail)}
+
+@media(max-width:700px){
+  :root{--rail:0px}
+  .rail{display:none}
+  h2{max-width:none}
+  body.present section{min-height:auto}
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .rider{transition:none}
+}
+</style>
+</head>
+<body>
+
+<a class="skip" href="#hero">Skip to content</a>
+
+<div class="rail" aria-hidden="true">
+  <div class="rider" id="rider">
+    <svg viewBox="0 0 34 34" fill="none">
+      <circle cx="17" cy="17" r="16" fill="#00c06a"/>
+      <circle cx="11" cy="22" r="3.6" stroke="#16181c" stroke-width="1.8"/>
+      <circle cx="23" cy="22" r="3.6" stroke="#16181c" stroke-width="1.8"/>
+      <path d="M11 22 L15.5 15 L21 15 M15.5 15 L19 22 M21 15 L23 22" stroke="#16181c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="21.5" cy="10.5" r="2.2" fill="#16181c"/>
+    </svg>
+  </div>
+</div>
+
+<nav class="nav">
+  <a class="wordmark" href="#hero">The Other Half</a>
+  <div class="navlinks">
+    <a href="#problem">The problem</a>
+    <a href="#passed">What passed</a>
+    <a href="#proposal">The proposal</a>
+    <a href="#faq">FAQ</a>
+    <a href="#about">About</a>
+    <button class="presentbtn" id="presentBtn" type="button">Present</button>
+  </div>
+</nav>
+
+<main>
+
+<!-- 1 ------------------------------------------------------------------ -->
+<section id="hero">
+  <div class="inner">
+    <p class="eyebrow">E-bike safety in Irvine · A project by Adriana</p>
+    <h1>The<br>Other<br>Half</h1>
+    <p class="deck">Irvine wrote the rules for e-bikes. <em>Nobody has taught the kids how to ride them.</em></p>
+    <div class="prose">
+      <p>I'm Adriana, and I live in Irvine. This page collects the research behind a
+      proposal I'm bringing to the City Council: a small, cheap pilot to close the
+      half of the e-bike safety problem that enforcement can't reach.</p>
+      <p>It's all here — the numbers, what the Council has already done, every option
+      I weighed and why I ruled most of them out. If you only read one section, read
+      <a href="#proposal">the proposal</a>.</p>
+      <div class="herocta">
+        <a class="btn btn-solid" href="#proposal">Read the proposal</a>
+        <a class="btn btn-ghost" href="#problem">Start with the data</a>
+      </div>
+    </div>
+    <div class="herometa">
+      <span>Irvine, California</span>
+      <span>An independent project</span>
+      <span>Not affiliated with the City</span>
+    </div>
+  </div>
+</section>
+
+<!-- 2 ------------------------------------------------------------------ -->
+<section id="problem">
+  <div class="inner">
+    <p class="eyebrow">The problem</p>
+    <h2>E-bikes arrived faster than anyone taught kids to ride them.</h2>
+
+    <div class="stage">
+      <div class="stat-row">
+        <div class="stat">
+          <span class="num">50<small>%</small></span>
+          <p>of all bicycle collisions in Irvine involve riders aged <strong>13 to 16</strong>.</p>
+        </div>
+        <div class="stat">
+          <span class="num">69<small>%</small></span>
+          <p>of those collisions involve an <strong>e-bike</strong>.</p>
+        </div>
+      </div>
+      <hr class="dash">
+      <p class="cite">Reported to the Irvine City Council by Police Chief Michael Kent during
+      deliberations on the city's e-bike ordinance.</p>
+    </div>
+
+    <div class="prose">
+      <p class="lede">The problem isn't that kids ride e-bikes. It's that a fourteen-year-old
+      can be handed a machine that does twenty miles an hour with no license, no training,
+      and often no helmet.</p>
+
+      <p>In a few short years e-bikes went from novelty to the default way a lot of Irvine
+      students get to school. That's genuinely good for the city: fewer car trips, shorter
+      pickup lines, and real independence for kids who are still years away from a driver's
+      license. I don't want to take that away.</p>
+
+      <p>But the speed came without the schooling. A teenager on an e-bike is moving at
+      traffic speed while being treated, legally and socially, like a kid on a bicycle. Most
+      have never been taught right-of-way, how much longer it takes to stop at twenty miles
+      an hour than at ten, or that a helmet only works if it actually fits.</p>
+
+      <div class="panel">
+        <h3>What the classes mean</h3>
+        <p>California sorts e-bikes into three classes, and most people buying one for their
+        kid have never heard of them.</p>
+        <ul class="classlist">
+          <li><span class="cname">Class 1</span><span class="cdesc">Pedal-assist only, motor cuts out at 20 mph.</span></li>
+          <li><span class="cname">Class 2</span><span class="cdesc">Throttle — it moves without pedaling — capped at 20 mph.</span></li>
+          <li><span class="cname">Class 3</span><span class="cdesc">Pedal-assist up to 28 mph. Age-restricted, and the class most often involved when speed is a factor.</span></li>
+        </ul>
+        <p style="margin-top:18px">Plenty of what's sold online outruns all three. A parent
+        looking for a reliable way to get their kid to school can end up buying something
+        closer to a moped, without ever being told.</p>
+      </div>
+
+      <h3>Where it goes wrong</h3>
+      <p>Across the research, the same failure modes come up again and again: riders
+      traveling at unsafe speeds for the space they're in; helmet use that's inconsistent at
+      best; almost no working knowledge of traffic law; trails and sidewalks built for walking
+      pace absorbing bikes moving three times that fast; and parents buying high-powered bikes
+      without knowing what they've bought.</p>
+
+      <p>Underneath all of it is a practical problem: this is genuinely hard to enforce. You
+      cannot station an officer at every school gate, and nobody wants a city that tries.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 3 ------------------------------------------------------------------ -->
+<section id="passed">
+  <div class="inner">
+    <p class="eyebrow">What the Council already did</p>
+    <h2>Ordinance No. 26&#8209;05</h2>
+
+    <div class="stage">
+      <div class="two">
+        <div>
+          <p class="cite" style="margin:0 0 18px">Amending Division 7 of Title 4 of the Irvine Municipal Code.</p>
+          <ul class="ord-list">
+            <li><span class="mk">Passed</span><span>Speed limits set for sidewalks and trails</span></li>
+            <li><span class="mk">Passed</span><span>Parents held accountable for how minors ride</span></li>
+            <li><span class="mk">6&ndash;1</span><span>Advanced by the Council</span></li>
+          </ul>
+        </div>
+        <div>
+          <blockquote class="pullquote">
+            <q>A full-blown crisis</q>
+            <footer>Mayor Agran, on e-bike safety in Irvine</footer>
+          </blockquote>
+        </div>
+      </div>
+    </div>
+
+    <div class="prose">
+      <p class="lede">I'm not here to undo that work. Setting speed limits and holding parents
+      accountable was the right call.</p>
+
+      <p>The Council took this seriously and acted. The ordinance put real speed limits on
+      sidewalks and trails, and it made parents answerable for how their children ride — which
+      matters, because parents are the ones buying the bikes.</p>
+
+      <p>It wasn't unanimous. Councilmember Carroll cast the lone no vote, objecting to the
+      sidewalk speed limits. That objection is worth taking seriously rather than waving away:
+      rules aimed at minors can slide into over-policing kids, and a speed limit on a sidewalk
+      is only as good as the judgment of whoever enforces it. It's part of why the proposal
+      on this page asks for a classroom rather than a citation.</p>
+
+      <h3>What it doesn't do</h3>
+      <p>Ordinance 26-05 is enforcement. Nearly all of it takes effect <em>after</em> something
+      has already gone wrong — after the speeding, after the crash, after the citation. That is
+      one necessary half of a safety program. It is not the whole of one.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 4 ------------------------------------------------------------------ -->
+<section id="gap">
+  <div class="inner">
+    <p class="eyebrow">Where the gap is</p>
+    <h2>A speed limit can't teach a fourteen&#8209;year&#8209;old how to read traffic.</h2>
+
+    <div class="stage">
+      <div class="gapbar">
+        <div class="seg seg-done">
+          <div class="lbl">Covered by 26&#8209;05</div>
+          <div class="val">Enforcement<br>&amp; regulation</div>
+        </div>
+        <div class="seg seg-open">
+          <div class="lbl">Not yet funded</div>
+          <div class="val">Education · Infrastructure · Data</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="prose">
+      <p>Enforcement is the half of the problem you can write into municipal code. The other
+      half is everything that happens before a citation: whether a kid was ever taught the
+      traffic laws, whether the intersection outside their school has a protected crossing,
+      and whether the city knows which corridors are actually dangerous.</p>
+
+      <p>None of that is funded. It isn't opposed either — it just hasn't been anybody's job.
+      That's the gap this project is about, and it's a gap you close with a curriculum and a
+      map, not with more rules.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 5 ------------------------------------------------------------------ -->
+<section id="proposal">
+  <div class="inner">
+    <p class="eyebrow">The proposal · Irvine Safe Ride</p>
+    <h2>One pilot.<br>One school.<br>This fall.</h2>
+
+    <div class="stage">
+      <div class="cards">
+        <div class="card">
+          <div class="kicker">Ask one · Teach it</div>
+          <p>A partnership with <strong>IUSD</strong> to bring e-bike safety workshops into a
+          single school — the traffic laws and riding skills that no one currently requires
+          before a fourteen-year-old gets on a 500-watt bike.</p>
+        </div>
+        <div class="card">
+          <div class="kicker">Ask two · Map it</div>
+          <p>A <strong>crowdsourced reporting map</strong> where residents flag crashes and
+          near-misses, so the city finds out which corridors are dangerous before someone is
+          hurt on one.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="prose">
+      <p class="lede">Two asks, both small enough to say yes to.</p>
+
+      <h3>Why a workshop, and what's in it</h3>
+      <p>One school, one term, taught in a slot that already exists rather than a new program
+      built from nothing: right-of-way, stopping distance at speed, where you can and can't
+      ride, and how to fit a helmet so it does something. California already requires minors
+      who get cited to complete a CHP safety course. That rule is sound — it just arrives too
+      late. This is the same content, delivered before the citation instead of after it.</p>
+
+      <h3>Why a map</h3>
+      <p>The city is making road-safety decisions without knowing where the near-misses happen,
+      because near-misses don't generate police reports. A reporting map fixes that cheaply, and
+      it doesn't need to be built from scratch — it can pilot on a platform the city already
+      uses. It also gives residents somewhere to put what they see, which is worth something on
+      its own.</p>
+
+      <h3>Why so small</h3>
+      <p>Because small things get funded. A council can approve one school and one map inside a
+      single budget cycle; a five-part citywide program goes to committee and dies there. Run
+      the pilot, measure it honestly, and let the results make the case for anything bigger.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 6 ------------------------------------------------------------------ -->
+<section id="program">
+  <div class="inner">
+    <p class="eyebrow">If the pilot works</p>
+    <h2>Four pillars</h2>
+
+    <div class="stage">
+      <div class="pillars">
+        <div class="pillar">
+          <h3>Infrastructure</h3>
+          <ul>
+            <li>Protected bike lanes near schools</li>
+            <li>Better intersection markings</li>
+            <li>Lighting for visibility</li>
+            <li>Dedicated crossings in high-traffic areas</li>
+          </ul>
+        </div>
+        <div class="pillar">
+          <h3>Education</h3>
+          <ul>
+            <li>Annual e-bike safety workshops</li>
+            <li>Student riding certification</li>
+            <li>Parent information sessions</li>
+          </ul>
+        </div>
+        <div class="pillar">
+          <h3>Incentives</h3>
+          <ul>
+            <li>Helmet discounts through local bike shops</li>
+            <li>Foot traffic for small business, safety for riders</li>
+          </ul>
+        </div>
+        <div class="pillar">
+          <h3>Data</h3>
+          <ul>
+            <li>Annual public safety report</li>
+            <li>Crash locations on a public map</li>
+            <li>Regular evaluation of what's working</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="prose">
+      <p>This is the long version — where the pilot leads if it works, not what I'm asking for
+      in three minutes. I'm listing it because the Council should know the destination before
+      approving the first step, and because the pilot is deliberately the cheapest piece of it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 7 ------------------------------------------------------------------ -->
+<section id="options">
+  <div class="inner">
+    <p class="eyebrow">Every option I weighed</p>
+    <h2>Why this ask, and not the others</h2>
+
+    <div class="stage">
+      <div class="tablewrap">
+        <table>
+          <thead>
+            <tr><th scope="col">Option</th><th scope="col">Feasibility</th><th scope="col">Verdict</th></tr>
+          </thead>
+          <tbody>
+            <tr class="lead"><td class="opt">Safety education campaign</td><td class="feas">High</td><td class="verdict">Lead with it. Low cost, no political fight, pilots in one district.</td></tr>
+            <tr class="lead"><td class="opt">Crowdsourced reporting</td><td class="feas">Medium</td><td class="verdict">Pair with it. Cheap, and it generates the crash data the city lacks.</td></tr>
+            <tr><td class="opt">Helmet incentives</td><td class="feas">High</td><td class="verdict">Supporting pillar, not the headline — it doesn't touch speed or road design.</td></tr>
+            <tr><td class="opt">Protected infrastructure</td><td class="feas">Medium&ndash;low, near term</td><td class="verdict">Phase two. Study and pilot one corridor, not a citywide overhaul.</td></tr>
+            <tr><td class="opt">Stronger enforcement</td><td class="feas">Already done</td><td class="verdict">26&#8209;05 covers it. Re-proposing it wastes the three minutes.</td></tr>
+            <tr><td class="opt">Ban high-powered e-bikes for minors</td><td class="feas">Low</td><td class="verdict">State classification law preempts a local ban. Ask for dealer disclosure at point of sale instead.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="prose">
+      <p>I started with seven options and cut five. The test was simple: does it address a
+      cause rather than a symptom, can a council actually approve it, and is it something
+      Irvine isn't already doing?</p>
+
+      <p>A petition drive came closest to making the cut. It's cheap and it shows support, but
+      councils have seen petitions before and can absorb one without doing anything. It works
+      as a way to arrive with numbers behind a specific ask — not as the ask itself.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 8 ------------------------------------------------------------------ -->
+<section id="close">
+  <div class="inner">
+    <p class="eyebrow">What I'm asking for</p>
+    <h2>Lead on the other half: not just <span style="color:var(--lane)">enforcing</span> safety, but <span style="color:var(--lane)">teaching</span> it.</h2>
+    <div class="prose">
+      <p>Irvine has already shown it's willing to lead on e-bike safety. The ordinance proved
+      that. The next step costs a fraction of what's already been spent, and it reaches kids
+      before the crash instead of after it.</p>
+    </div>
+    <p class="sig">Adriana · Public comment · Irvine City Council</p>
+  </div>
+</section>
+
+<!-- 9 ------------------------------------------------------------------ -->
+<section id="faq" data-present="skip">
+  <div class="inner">
+    <p class="eyebrow">Questions people ask</p>
+    <h2>Fair objections</h2>
+    <div class="faq">
+      <div class="qa">
+        <h4>Isn't teaching kids to ride their parents' job?</h4>
+        <p>Mostly, yes — and most parents are doing their best with a machine that didn't exist
+        when they learned to ride. We don't leave driver's education to parents either, because
+        the consequences are shared with everyone else on the road. An e-bike at twenty miles an
+        hour is much closer to a vehicle than to the bike you grew up with.</p>
+      </div>
+      <div class="qa">
+        <h4>Doesn't Ordinance 26-05 already handle this?</h4>
+        <p>It handles the enforcement half, and it handles it well. But almost everything in it
+        takes effect after a rule has already been broken. Nothing in the ordinance teaches a
+        kid the rule in the first place, and nothing in it tells the city which intersections
+        keep producing near-misses.</p>
+      </div>
+      <div class="qa">
+        <h4>Are you trying to ban e-bikes, or take them away from kids?</h4>
+        <p>No. E-bikes are good for Irvine — they cut car trips, ease school-run traffic, and
+        give teenagers real independence. I want them ridden well, not ridden less. That's why
+        I ruled out asking for a ban on high-powered bikes, even though it targets a genuine
+        cause: state law already governs classification, and a local ban would likely conflict
+        with it while being close to unenforceable.</p>
+      </div>
+      <div class="qa">
+        <h4>How much would the pilot cost?</h4>
+        <p>Less than almost anything else on the table, which is the point. One school, staff
+        time in a slot that already exists, and a reporting tool that can run on a platform the
+        city already pays for. I'm not going to invent a precise figure — establishing the real
+        cost is part of what a pilot is for.</p>
+      </div>
+      <div class="qa">
+        <h4>What can I do?</h4>
+        <p>Come to a Council meeting and speak during public comment — three minutes, no
+        appointment needed, and councils notice when residents keep showing up about the same
+        thing. If you'd rather not speak, tell me which intersections worry you. That's exactly
+        the information the reporting map is meant to collect, and I'm gathering it in the
+        meantime.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 10 ----------------------------------------------------------------- -->
+<section id="about" data-present="skip">
+  <div class="inner">
+    <p class="eyebrow">About this project &amp; where the numbers come from</p>
+    <h2>About</h2>
+    <div class="src-grid" style="margin-top:clamp(26px,3.5vh,40px)">
+      <div>
+        <h3>Why I built this</h3>
+        <p style="max-width:46ch">I've watched e-bikes become both a lifeline and a liability
+        on Irvine's streets — near our schools, and on the trails our families use every
+        weekend. This is my own research, gathered on my own time, and this page is where I
+        keep it.</p>
+        <p style="max-width:46ch">It isn't a campaign and it isn't an organization. It's one
+        resident with a proposal, and a page so that anyone can check the reasoning behind it.</p>
+        <p class="footnote">Not affiliated with the City of Irvine, IUSD, or any organization.
+        Get in touch: <a href="mailto:you@example.com">you@example.com</a>.</p>
+      </div>
+      <div>
+        <h3>Sources</h3>
+        <ul class="src-list" style="margin-top:16px">
+          <li><b>Collision statistics</b> — Irvine Police Chief Michael Kent, in testimony to the Irvine City Council on e-bike safety.</li>
+          <li><b>Ordinance No. 26&#8209;05</b> — Irvine City Council, amending Division 7 of Title 4 of the Irvine Municipal Code; advanced 6&ndash;1.</li>
+          <li><b>&ldquo;A full-blown crisis&rdquo;</b> — Mayor Agran, during Council deliberations.</li>
+          <li><b>Dissent</b> — Councilmember Carroll cast the lone no vote, objecting to sidewalk speed limits.</li>
+          <li><b>State law</b> — California requires cited minors to complete a CHP safety course; e-bike class definitions are set in state vehicle code.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="pagefoot">
+  <div class="inner">
+    <span>The Other Half — e-bike safety in Irvine. A project by Adriana.</span>
+    <span>Independent · Not affiliated with the City of Irvine or IUSD.</span>
+  </div>
+</footer>
+
+<div class="hint" id="hint"><kbd>&rarr;</kbd> next · <kbd>&larr;</kbd> back · <kbd>Esc</kbd> exit</div>
+
+<script>
+(function(){
+  var body    = document.body;
+  var btn     = document.getElementById('presentBtn');
+  var hint    = document.getElementById('hint');
+  var rider   = document.getElementById('rider');
+  var reduce  = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // In presentation mode we step through the argument only; FAQ, about and the
+  // footer are for readers, not for the projector.
+  function slides(){
+    return Array.prototype.slice.call(
+      document.querySelectorAll('main section:not([data-present="skip"])'));
+  }
+
+  function isPresenting(){ return body.classList.contains('present'); }
+
+  function setPresenting(on){
+    body.classList.toggle('present', on);
+    if (btn) btn.textContent = on ? 'Exit' : 'Present';
+    if (on) goTo(currentIndex());
+    updateRider();
+  }
+
+  function currentIndex(){
+    var list = slides(), best = 0, bestTop = Infinity;
+    for (var i = 0; i < list.length; i++){
+      var top = Math.abs(list[i].getBoundingClientRect().top);
+      if (top < bestTop){ bestTop = top; best = i; }
+    }
+    return best;
+  }
+
+  function goTo(i){
+    var list = slides();
+    i = Math.max(0, Math.min(list.length - 1, i));
+    list[i].scrollIntoView({behavior: reduce ? 'auto' : 'smooth', block: 'start'});
+  }
+
+  // The rider tracks read progress through the whole page, presenting or not.
+  function updateRider(){
+    if (!rider) return;
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    var pct = max > 0 ? Math.min(1, Math.max(0, window.pageYOffset / max)) : 0;
+    rider.style.transform = 'translateY(' + (6 + pct * 88) + 'vh)';
+  }
+
+  if (btn) btn.addEventListener('click', function(){ setPresenting(!isPresenting()); });
+
+  document.addEventListener('keydown', function(e){
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    var tag = (e.target.tagName || '').toLowerCase();
+    if (tag === 'input' || tag === 'textarea') return;
+
+    if (e.key === 'Escape' && isPresenting()){
+      e.preventDefault(); setPresenting(false); return;
+    }
+    // `p` toggles from anywhere; the arrows only take over while presenting, so
+    // ordinary scrolling still works for someone just reading the page.
+    if (e.key === 'p' || e.key === 'P'){
+      if (tag === 'button') return;
+      e.preventDefault(); setPresenting(!isPresenting()); return;
+    }
+    if (!isPresenting()) return;
+
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' '){
+      e.preventDefault(); goTo(currentIndex() + 1);
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'PageUp'){
+      e.preventDefault(); goTo(currentIndex() - 1);
+    } else if (e.key === 'Home'){
+      e.preventDefault(); goTo(0);
+    } else if (e.key === 'End'){
+      e.preventDefault(); goTo(slides().length - 1);
+    }
+  });
+
+  window.addEventListener('scroll', updateRider, {passive:true});
+  window.addEventListener('resize', updateRider);
+  updateRider();
+})();
+</script>
+
+</body>
+</html>
