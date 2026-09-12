@@ -268,9 +268,6 @@ so I have not picked one:
 Whichever you choose, the About paragraph and the hero's "An independent project"
 line need to agree with it.
 
-**Fill in the placeholder.** The About section has a `you@example.com` contact
-link. Replace it or delete the sentence.
-
 ## Editing
 
 Each section is one `<section>` with two layers:
