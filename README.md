@@ -306,6 +306,39 @@ One rule to keep: `--sky` is 3.1:1 on white, which passes for large text, rules,
 and borders but **fails for body-size text**. Use `--sky-ink` anywhere the type
 is under ~24px.
 
+## Favicon and GitHub Pages
+
+`favicon.svg` is the icon: a bike in white on a navy tile, drawn at a 32-unit grid so
+it still reads at 16px. The solid tile matters, since a bare outline disappears
+against a dark browser chrome. Two rasterised fallbacks sit beside it,
+`favicon-32.png` for browsers that don't take SVG icons and `apple-touch-icon.png`
+(square and full-bleed, because iOS composites transparent corners onto black and
+applies its own rounding).
+
+Regenerate the PNGs after editing the SVG:
+
+```sh
+qlmanage -t -s 512 -o . favicon.svg
+sips -s format png -z 32 32 favicon.svg.png --out favicon-32.png
+sed 's/ rx="7"//' favicon.svg > sq.svg && qlmanage -t -s 512 -o . sq.svg
+sips -s format png -z 180 180 sq.svg.png --out apple-touch-icon.png
+rm -f sq.svg sq.svg.png favicon.svg.png
+```
+
+**The icon paths are relative on purpose.** A GitHub Pages *project* site serves from
+`https://<user>.github.io/<repo>/`, so `/favicon.svg` would 404. Every asset path on
+the page is relative for the same reason. If you ever move this to a user site or a
+custom domain the relative paths still work, so leave them alone.
+
+A `.nojekyll` file is in the repo root. GitHub Pages runs Jekyll by default, which
+skips files beginning with an underscore and can surprise you; `.nojekyll` tells it to
+serve the directory as-is.
+
+One thing to fix before deploying: the poster file is named
+`Irvine safe ride official poster!.html`. The link on the page is URL-encoded so it
+works, but a filename with spaces and an exclamation mark is asking for trouble.
+Renaming it to `poster.html` (and updating the one link in `#poster`) would be safer.
+
 ### If the venue has no internet
 
 The three typefaces (Archivo, Source Serif 4, DM Mono) load from Google Fonts.
