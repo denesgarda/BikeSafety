@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#ffffff">
 <title>The Other Half — E-Bike Safety in Irvine</title>
 <meta name="description" content="Irvine wrote the rules for e-bikes. Nobody has taught the kids how to ride them. Research and a proposal for the Irvine City Council, by Adriana.">
 <meta property="og:title" content="The Other Half — E-Bike Safety in Irvine">
@@ -10,19 +11,21 @@
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=DM+Mono:wght@400;500&family=Source+Serif+4:opsz,wght@8..60,400..600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=DM+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;1,9..144,400&family=Inter:wght@400;600;700&family=Source+Serif+4:opsz,wght@8..60,400..600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --asphalt:#16181c;
-  --asphalt-lift:#1e2127;
-  --asphalt-line:#2b2f37;
-  --thermo:#f2f4f0;
-  --thermo-dim:#9aa1ab;
-  --lane:#00c06a;
-  --amber:#ffb020;
-  --sign-red:#e4442e;
+  color-scheme:light;
 
-  --rail:56px;
+  --paper:#ffffff;
+  --paper-tint:#f1f7fc;
+  --rule:#cfe0ee;
+  --navy:#0d2b4e;
+  --navy-deep:#07203c;
+  --navy-soft:#5c7793;
+  --sky:#2e9bd6;
+  --sky-ink:#0f6ea8;
+  --sky-pale:#eaf5fc;
+
   --navh:60px;
   --pad:clamp(22px,4.5vw,80px);
   --measure:68ch;
@@ -35,75 +38,61 @@
 *{box-sizing:border-box}
 html{scroll-behavior:smooth; overflow-x:hidden}
 body{
-  margin:0; background:var(--asphalt); color:var(--thermo);
+  margin:0; background:var(--paper); color:var(--navy);
   font-family:var(--body); font-size:18px; line-height:1.65;
   -webkit-font-smoothing:antialiased;
 }
 @media(min-width:1100px){body{font-size:19px}}
 
-/* ============ the bike lane rail (signature + progress) ============ */
-.rail{
-  position:fixed; top:0; left:0; bottom:0; width:var(--rail);
-  background:linear-gradient(180deg,rgba(0,192,106,.15),rgba(0,192,106,.09));
-  border-right:1px solid var(--asphalt-line);
-  z-index:80; pointer-events:none;
-}
-.rail::before{
-  content:""; position:absolute; left:50%; top:0; bottom:0; width:3px; margin-left:-1.5px;
-  background:repeating-linear-gradient(180deg,
-    rgba(242,244,240,.5) 0 20px, transparent 20px 38px);
-}
-.rider{
-  position:absolute; left:50%; top:0; width:30px; height:30px;
-  margin-left:-15px; margin-top:-15px;
-  transform:translateY(6vh);
-  transition:transform .3s linear;
-  will-change:transform;
-}
-.rider svg{display:block; width:100%; height:100%}
-
 /* ============ top navigation ============ */
 .nav{
   position:sticky; top:0; z-index:70;
   height:var(--navh);
-  margin-left:var(--rail);
   display:flex; align-items:center; gap:20px;
   padding:0 var(--pad);
-  background:rgba(22,24,28,.92);
+  background:rgba(255,255,255,.94);
   backdrop-filter:blur(10px);
-  border-bottom:1px solid var(--asphalt-line);
+  border-bottom:1px solid var(--rule);
 }
 .wordmark{
   font-family:var(--display); font-stretch:118%; font-weight:800;
   font-size:15px; letter-spacing:.01em; text-transform:uppercase;
-  color:var(--thermo); text-decoration:none; white-space:nowrap;
+  color:var(--navy); text-decoration:none; white-space:nowrap;
   display:flex; align-items:center; gap:9px;
 }
 .wordmark::before{
-  content:""; width:20px; height:0; border-top:3px solid var(--lane);
+  content:""; width:20px; height:0; border-top:3px solid var(--sky);
 }
 .navlinks{
   display:flex; gap:22px; margin-left:auto; align-items:center;
   font-family:var(--mono); font-size:12px; letter-spacing:.09em; text-transform:uppercase;
 }
-.navlinks a{color:var(--thermo-dim); text-decoration:none; white-space:nowrap}
-.navlinks a:hover,.navlinks a:focus-visible{color:var(--lane)}
+.navlinks a{color:var(--navy-soft); text-decoration:none; white-space:nowrap}
+.navlinks a:hover,.navlinks a:focus-visible{color:var(--sky-ink)}
 .presentbtn{
   font-family:var(--mono); font-size:12px; letter-spacing:.09em; text-transform:uppercase;
-  color:var(--asphalt); background:var(--lane); border:0;
+  color:#fff; background:var(--navy); border:0;
   padding:8px 14px; cursor:pointer; white-space:nowrap;
 }
-.presentbtn:hover{background:#20d67f}
+.presentbtn:hover{background:var(--sky-ink)}
+/* Over the hero the bar goes transparent; it falls back to the solid white
+   version if the script never runs, which is the safe direction to fail. */
+.nav.nav--over{background:transparent; border-bottom-color:transparent; backdrop-filter:none}
+.nav--over .wordmark{color:#fff}
+.nav--over .navlinks a{color:rgba(255,255,255,.8)}
+.nav--over .navlinks a:hover,.nav--over .navlinks a:focus-visible{color:#fff}
+.nav--over .presentbtn{background:#fff; color:var(--navy)}
+.nav--over .presentbtn:hover{background:var(--sky); color:#fff}
+
 @media(max-width:900px){
   .navlinks a{display:none}
   .navlinks{margin-left:auto}
 }
 
 /* ============ sections ============ */
-main{margin-left:var(--rail)}
 section{
   padding:clamp(56px,9vh,110px) var(--pad);
-  border-bottom:1px solid var(--asphalt-line);
+  border-bottom:1px solid var(--rule);
   scroll-margin-top:var(--navh);
 }
 .inner{width:100%; max-width:1120px; margin:0 auto}
@@ -111,16 +100,16 @@ section{
 .eyebrow{
   font-family:var(--mono); font-size:12px;
   letter-spacing:.19em; text-transform:uppercase;
-  color:var(--thermo-dim); margin:0 0 18px;
+  color:var(--navy-soft); margin:0 0 18px;
   display:flex; align-items:center; gap:13px;
 }
-.eyebrow::before{content:""; width:28px; height:0; flex:none; border-top:3px solid var(--lane)}
+.eyebrow::before{content:""; width:28px; height:0; flex:none; border-top:3px solid var(--sky)}
 
 h1,h2{
   font-family:var(--display); font-weight:800; font-stretch:122%;
   line-height:.95; letter-spacing:-.02em; text-transform:uppercase; margin:0;
 }
-h1{font-size:clamp(46px,8vw,124px); line-height:.9}
+h1{font-size:clamp(44px,6.2vw,104px); line-height:.9}
 h2{font-size:clamp(26px,3vw,44px); max-width:22ch}
 h3{
   font-family:var(--display); font-stretch:112%; font-weight:700;
@@ -131,8 +120,8 @@ h4{
   font-family:var(--display); font-stretch:110%; font-weight:700;
   font-size:clamp(16px,1.2vw,20px); margin:0 0 8px; letter-spacing:-.005em;
 }
-strong{font-weight:600; color:#fff}
-a{color:var(--lane)}
+strong{font-weight:600; color:var(--navy-deep)}
+a{color:var(--sky-ink)}
 
 /* prose: the reading layer, hidden when projecting */
 .prose{margin-top:clamp(26px,3.5vh,40px)}
@@ -140,37 +129,197 @@ a{color:var(--lane)}
 .prose p:last-child{margin-bottom:0}
 .lede{
   font-size:clamp(19px,1.6vw,25px); line-height:1.45;
-  color:var(--thermo); max-width:52ch;
+  color:var(--navy); max-width:52ch;
 }
 
 /* stage: the projected layer, always visible */
 .stage{margin-top:clamp(26px,3.5vh,40px)}
 
-.dash{border:0; height:0; border-top:3px dashed var(--asphalt-line); margin:clamp(30px,4vh,48px) 0}
+.dash{border:0; height:0; border-top:3px dashed var(--rule); margin:clamp(30px,4vh,48px) 0}
 
 /* ============ hero ============ */
-#hero{border-bottom:1px solid var(--asphalt-line)}
-#hero .deck{
-  font-family:var(--body);
-  font-size:clamp(20px,2.1vw,32px); line-height:1.3;
-  max-width:24ch; margin:clamp(24px,3.4vh,38px) 0 0;
+#hero{
+  position:relative; overflow:hidden;
+  margin-top:calc(-1 * var(--navh));
+  min-height:min(86svh,820px);
+  display:flex; flex-direction:column; justify-content:flex-end;
+  padding:clamp(96px,14vh,150px) var(--pad) clamp(40px,6vh,72px);
+  border-bottom:0;
 }
-#hero .deck em{font-style:normal; color:var(--lane)}
+.hero-bg{position:absolute; inset:0}
+.hero-bg img{
+  width:100%; height:100%; object-fit:cover; object-position:58% 45%;
+  display:block; filter:saturate(.72) contrast(1.06);
+}
+/* Two scrims: one down, one across, so the headline keeps contrast wherever the
+   aerial happens to be bright. */
+.hero-bg::after{
+  content:""; position:absolute; inset:0;
+  background:
+    linear-gradient(180deg, rgba(7,32,60,.30) 0%, rgba(7,32,60,.40) 42%, rgba(7,32,60,.74) 100%),
+    linear-gradient(90deg,  rgba(7,32,60,.72) 0%, rgba(7,32,60,.24) 58%, rgba(7,32,60,0) 100%);
+}
+.hero-inner{position:relative; z-index:1; width:100%; max-width:1120px; margin:0 auto}
+
+#hero h1{font-size:clamp(48px,8.4vw,132px); color:#fff}
+#hero .eyebrow{color:#a7d4f0}
+#hero .deck{
+  font-size:clamp(19px,2.1vw,31px); line-height:1.32;
+  max-width:27ch; margin:clamp(22px,3vh,34px) 0 0; color:rgba(255,255,255,.93);
+}
+#hero .deck em{font-style:normal; color:#8ed2f7}
 .herometa{
-  margin-top:clamp(30px,4vh,46px);
+  margin-top:clamp(26px,3.6vh,42px);
   font-family:var(--mono); font-size:12px;
-  letter-spacing:.15em; text-transform:uppercase; color:var(--thermo-dim);
+  letter-spacing:.15em; text-transform:uppercase; color:rgba(255,255,255,.62);
   display:flex; gap:8px 24px; flex-wrap:wrap;
 }
 .herocta{display:flex; gap:12px; flex-wrap:wrap; margin-top:clamp(26px,3.5vh,36px)}
 .btn{
   font-family:var(--mono); font-size:13px; letter-spacing:.09em; text-transform:uppercase;
-  padding:13px 20px; text-decoration:none; display:inline-block;
+  padding:14px 22px; text-decoration:none; display:inline-block;
 }
-.btn-solid{background:var(--lane); color:var(--asphalt)}
-.btn-solid:hover{background:#20d67f}
-.btn-ghost{border:1px solid var(--asphalt-line); color:var(--thermo)}
-.btn-ghost:hover{border-color:var(--lane); color:var(--lane)}
+#hero .btn-solid{background:#fff; color:var(--navy)}
+#hero .btn-solid:hover{background:var(--sky); color:#fff}
+#hero .btn-ghost{border:1px solid rgba(255,255,255,.45); color:#fff}
+#hero .btn-ghost:hover{border-color:#fff; background:rgba(255,255,255,.12)}
+.hero-credit{
+  position:absolute; right:var(--pad); bottom:14px; z-index:1; margin:0;
+  font-family:var(--mono); font-size:10px; letter-spacing:.1em;
+  text-transform:uppercase; color:rgba(255,255,255,.42);
+}
+@media(max-width:700px){.hero-credit{position:static; margin-top:20px; text-align:left}}
+
+/* the opening lede, on white, directly under the hero */
+#intro .lede{margin-bottom:1em}
+#intro p{max-width:var(--measure); margin:0 0 1.1em}
+#intro p:last-child{margin-bottom:0}
+
+/* ============ the campaign poster ============ */
+/* Reproduced at its native 1200x1800 and scaled to fit, so it stays selectable
+   text rather than a flattened image. Its palette is deliberately its own. */
+#poster{background:var(--paper-tint)}
+.poster-wrap{max-width:880px; margin:clamp(26px,3.5vh,40px) auto 0}
+.poster-frame{
+  width:100%; aspect-ratio:2/3; overflow:hidden;
+  border:1px solid var(--rule);
+  box-shadow:0 18px 50px rgba(13,43,78,.16);
+  background:#14192b;
+}
+.poster{
+  --p-navy-deep:#14192b; --p-sky:#7fa9c9; --p-paper:#f3ede0;
+  position:relative; width:1200px; height:1800px;
+  transform:scale(var(--poster-scale, .7333)); transform-origin:top left;
+  font-family:"Inter","Helvetica Neue",Helvetica,Arial,sans-serif;
+  color:var(--p-paper);
+}
+.poster .photo{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:50% 30%}
+.poster .scrim-top{
+  position:absolute; top:0; left:0; right:0; height:560px;
+  background:linear-gradient(180deg,rgba(20,25,43,.92) 0%,rgba(20,25,43,.68) 55%,rgba(20,25,43,0) 100%);
+}
+.poster .scrim-bottom{
+  position:absolute; bottom:0; left:0; right:0; height:820px;
+  background:linear-gradient(0deg,rgba(20,25,43,.97) 0%,rgba(20,25,43,.93) 40%,rgba(20,25,43,0) 100%);
+}
+.poster .header{position:absolute; top:64px; left:72px; right:72px}
+.poster .eyebrow-row{display:flex; align-items:center; gap:16px; margin-bottom:22px}
+.poster .dot{width:10px; height:10px; border-radius:50%; background:var(--p-sky)}
+.poster .location{font-size:20px; font-weight:600; letter-spacing:.04em; color:var(--p-sky)}
+.poster h1{
+  font-family:"Fraunces",Georgia,serif; font-weight:600; font-size:96px; line-height:.98;
+  color:var(--p-paper); max-width:980px; text-wrap:balance;
+  text-transform:none; letter-spacing:0; margin:0;
+}
+.poster h1 em{font-style:italic; font-weight:400; color:var(--p-sky)}
+.poster .footer{position:absolute; bottom:0; left:0; right:0; padding:56px 72px 64px}
+.poster .ask-line{
+  font-family:"Fraunces",Georgia,serif; font-weight:600; font-size:42px; line-height:1.15;
+  max-width:900px; margin-bottom:40px; color:var(--p-paper);
+}
+.poster .asks{display:grid; grid-template-columns:repeat(3,1fr); gap:28px; margin-bottom:44px}
+.poster .ask-card{border-top:2px solid var(--p-sky); padding-top:16px}
+.poster .ask-num{font-size:14px; font-weight:700; letter-spacing:.08em; color:var(--p-sky); margin-bottom:10px}
+.poster .ask-title{font-size:24px; font-weight:700; margin-bottom:8px; color:var(--p-paper)}
+.poster .ask-desc{font-size:17px; line-height:1.45; color:#d8d2c4}
+.poster .bottom-row{
+  display:flex; justify-content:space-between; align-items:flex-end;
+  border-top:1px solid rgba(243,237,224,.25); padding-top:28px;
+}
+.poster .stat{display:flex; flex-direction:column}
+.poster .stat-num{font-family:"Fraunces",Georgia,serif; font-size:44px; font-weight:700; color:var(--p-sky); line-height:1}
+.poster .stat-label{font-size:15px; color:#cfc8b8; margin-top:8px; max-width:220px; line-height:1.35}
+.poster .cta{text-align:right}
+.poster .cta-label{font-size:15px; color:#cfc8b8; margin-bottom:6px}
+.poster .cta-name{font-family:"Fraunces",Georgia,serif; font-size:28px; font-weight:600; color:var(--p-paper)}
+.poster-note{
+  font-family:var(--mono); font-size:12px; letter-spacing:.02em; line-height:1.7;
+  color:var(--navy-soft); margin:18px auto 0; max-width:880px;
+}
+
+/* ============ citations ============ */
+.ref{
+  font-family:var(--mono); font-size:.64em; font-weight:500;
+  vertical-align:super; line-height:0; margin-left:2px;
+  text-decoration:none; color:var(--sky-ink);
+}
+.ref:hover,.ref:focus-visible{text-decoration:underline}
+.pullquote .ref{color:#8ed2f7}
+
+/* ============ at a glance ============ */
+.glance{display:grid; grid-template-columns:1fr; gap:clamp(16px,2vw,26px); margin-top:clamp(26px,3.5vh,40px)}
+@media(min-width:860px){.glance{grid-template-columns:repeat(3,1fr)}}
+.glance-card{border-top:3px solid var(--sky); padding-top:18px}
+.glance-card .k{
+  font-family:var(--mono); font-size:11px; letter-spacing:.17em;
+  text-transform:uppercase; color:var(--sky-ink); margin-bottom:12px;
+}
+.glance-card h3{margin-bottom:10px}
+.glance-card p{font-size:16px; line-height:1.5; color:var(--navy-soft); margin:0; max-width:none}
+
+/* ============ the proportion figure ============ */
+.figure{margin:0}
+.bignum{
+  font-family:var(--display); font-weight:900; font-stretch:125%;
+  font-size:clamp(38px,4.6vw,68px); line-height:.88; letter-spacing:-.03em;
+  color:var(--navy); margin:0; text-transform:uppercase;
+}
+.bignum-sub{
+  font-size:clamp(17px,1.45vw,22px); line-height:1.4;
+  max-width:30ch; margin:14px 0 0;
+}
+.figure-head{display:grid; grid-template-columns:1fr; gap:0}
+@media(min-width:820px){
+  .figure-head{grid-template-columns:auto 1fr; gap:clamp(26px,3vw,48px); align-items:center}
+  .bignum-sub{margin:0}
+}
+/* 2px surface gaps do the separating, so the segments never rely on color alone */
+.propbar{
+  display:flex; gap:2px; margin-top:clamp(26px,3.5vh,38px);
+  height:clamp(50px,5vw,66px);
+}
+.propbar .seg{
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--display); font-stretch:112%; font-weight:800;
+  font-size:clamp(15px,1.4vw,21px); min-width:0;
+}
+.propbar .seg-a{background:var(--navy); color:#fff; border-radius:4px 0 0 4px}
+.propbar .seg-b{background:var(--sky); color:var(--navy)}
+.propbar .seg-c{background:#a9cde8; color:var(--navy); border-radius:0 4px 4px 0}
+.propkey{
+  display:flex; flex-wrap:wrap; gap:10px 26px; margin-top:16px; padding:0; list-style:none;
+  font-family:var(--mono); font-size:12px; letter-spacing:.03em; color:var(--navy-soft);
+}
+.propkey li{display:flex; align-items:center; gap:9px}
+.propkey i{width:13px; height:13px; flex:none; border-radius:2px}
+.propkey .sw-a{background:var(--navy)}
+.propkey .sw-b{background:var(--sky)}
+.propkey .sw-c{background:#a9cde8}
+.figure-note{
+  font-family:var(--mono); font-size:13px; line-height:1.7; color:var(--navy-soft);
+  margin:20px 0 0; max-width:70ch; letter-spacing:.01em;
+}
+.figure-note strong{color:var(--navy); font-weight:500}
 
 /* ============ stats ============ */
 .stat-row{display:flex; flex-wrap:wrap; gap:clamp(28px,5vw,84px)}
@@ -178,19 +327,19 @@ a{color:var(--lane)}
 .stat .num{
   font-family:var(--display); font-weight:900; font-stretch:125%;
   font-size:clamp(66px,8.5vw,138px); line-height:.82;
-  letter-spacing:-.04em; color:var(--amber); display:block;
+  letter-spacing:-.04em; color:var(--navy); display:block;
 }
-.stat .num small{font-size:.42em; letter-spacing:-.02em}
+.stat .num small{font-size:.42em; letter-spacing:-.02em; color:var(--sky)}
 .stat p{font-size:clamp(16px,1.2vw,20px); line-height:1.4; margin:16px 0 0; max-width:24ch}
 .cite{
-  font-family:var(--mono); font-size:13px; color:var(--thermo-dim);
+  font-family:var(--mono); font-size:13px; color:var(--navy-soft);
   line-height:1.65; max-width:60ch; letter-spacing:.01em;
 }
 
 /* ============ callout panel ============ */
 .panel{
-  background:var(--asphalt-lift); border:1px solid var(--asphalt-line);
-  border-left:4px solid var(--lane);
+  background:var(--paper-tint); border:1px solid var(--rule);
+  border-left:4px solid var(--sky);
   padding:clamp(22px,2.4vw,32px);
   margin:clamp(26px,3.5vh,40px) 0;
 }
@@ -200,37 +349,37 @@ a{color:var(--lane)}
 .classlist{list-style:none; margin:18px 0 0; padding:0; display:grid; gap:0}
 .classlist li{
   display:grid; grid-template-columns:auto 1fr; gap:6px 18px;
-  padding:13px 0; border-top:1px solid var(--asphalt-line);
+  padding:13px 0; border-top:1px solid var(--rule);
   align-items:baseline;
 }
 .classlist li:first-child{border-top:0}
 .classlist .cname{
   font-family:var(--display); font-stretch:110%; font-weight:700;
-  text-transform:uppercase; font-size:15px; white-space:nowrap; color:var(--thermo);
+  text-transform:uppercase; font-size:15px; white-space:nowrap; color:var(--navy);
 }
-.classlist .cdesc{font-size:16px; color:var(--thermo-dim); line-height:1.5}
+.classlist .cdesc{font-size:16px; color:var(--navy-soft); line-height:1.5}
 
 /* ============ ordinance list ============ */
 .ord-list{list-style:none; margin:0; padding:0}
 .ord-list li{
   display:flex; gap:16px; align-items:baseline; flex-wrap:wrap;
-  padding:15px 0; border-top:1px solid var(--asphalt-line);
+  padding:15px 0; border-top:1px solid var(--rule);
   font-size:clamp(16px,1.2vw,21px);
 }
-.ord-list li:last-child{border-bottom:1px solid var(--asphalt-line)}
+.ord-list li:last-child{border-bottom:1px solid var(--rule)}
 .ord-list .mk{
-  font-family:var(--mono); font-size:12px; color:var(--lane);
+  font-family:var(--mono); font-size:12px; color:var(--sky-ink);
   letter-spacing:.1em; text-transform:uppercase; flex:none; min-width:76px;
 }
-.pullquote{border-left:6px solid var(--sign-red); padding:4px 0 4px clamp(18px,2vw,30px); margin:0}
+.pullquote{background:var(--navy); border-left:6px solid var(--sky); padding:clamp(20px,2.2vw,30px); margin:0}
 .pullquote q{
   font-family:var(--display); font-weight:800; font-stretch:118%;
   font-size:clamp(28px,3.2vw,48px); line-height:1; letter-spacing:-.02em;
-  text-transform:uppercase; color:var(--sign-red); quotes:none; display:block;
+  text-transform:uppercase; color:#fff; quotes:none; display:block;
 }
 .pullquote footer{
   font-family:var(--mono); font-size:12px; letter-spacing:.11em; text-transform:uppercase;
-  color:var(--thermo-dim); margin-top:16px;
+  color:rgba(255,255,255,.62); margin-top:16px;
 }
 .two{display:grid; grid-template-columns:1fr; gap:clamp(26px,3.5vw,56px); align-items:start}
 @media(min-width:900px){.two{grid-template-columns:1.05fr .95fr}}
@@ -245,27 +394,27 @@ a{color:var(--lane)}
   font-size:clamp(17px,1.7vw,27px); line-height:1.06;
   text-transform:uppercase; letter-spacing:-.01em;
 }
-.seg-done{border:3px solid var(--asphalt-line); background:var(--asphalt-lift)}
-.seg-done .lbl,.seg-done .val{color:var(--thermo-dim)}
-.seg-open{border:3px dashed var(--lane); background:rgba(0,192,106,.08)}
-.seg-open .lbl{color:var(--lane)}
-.seg-open .val{color:var(--thermo)}
+.seg-done{border:3px solid var(--rule); background:var(--paper-tint)}
+.seg-done .lbl,.seg-done .val{color:var(--navy-soft)}
+.seg-open{border:3px dashed var(--sky); background:var(--sky-pale)}
+.seg-open .lbl{color:var(--sky-ink)}
+.seg-open .val{color:var(--navy)}
 
 /* ============ ask cards ============ */
 .cards{display:grid; grid-template-columns:1fr; gap:clamp(14px,1.8vw,22px)}
 @media(min-width:820px){.cards{grid-template-columns:1fr 1fr}}
 .card{
-  background:var(--asphalt-lift); border:1px solid var(--asphalt-line);
-  border-top:4px solid var(--lane); padding:clamp(20px,2.2vw,30px);
+  background:var(--paper-tint); border:1px solid var(--rule);
+  border-top:4px solid var(--sky); padding:clamp(20px,2.2vw,30px);
 }
 .card .kicker{
   font-family:var(--mono); font-size:11px; letter-spacing:.17em; text-transform:uppercase;
-  color:var(--lane); margin-bottom:12px;
+  color:var(--sky-ink); margin-bottom:12px;
 }
 .card p{font-size:clamp(16px,1.15vw,20px); margin:0}
 
 .footnote{
-  font-family:var(--mono); font-size:13px; color:var(--thermo-dim);
+  font-family:var(--mono); font-size:13px; color:var(--navy-soft);
   line-height:1.7; margin-top:clamp(22px,3vh,32px); max-width:72ch; letter-spacing:.01em;
 }
 
@@ -273,71 +422,98 @@ a{color:var(--lane)}
 .pillars{display:grid; grid-template-columns:1fr; gap:0}
 @media(min-width:760px){.pillars{grid-template-columns:1fr 1fr}}
 @media(min-width:1180px){.pillars{grid-template-columns:repeat(4,1fr)}}
-.pillar{padding:clamp(20px,1.9vw,28px) clamp(18px,1.7vw,26px); border-top:3px solid var(--lane)}
+.pillar{padding:clamp(20px,1.9vw,28px) clamp(18px,1.7vw,26px); border-top:3px solid var(--sky)}
 @media(min-width:760px){
-  .pillar{border-left:1px solid var(--asphalt-line)}
+  .pillar{border-left:1px solid var(--rule)}
   .pillar:nth-child(odd){border-left:0}
 }
 @media(min-width:1180px){
-  .pillar:nth-child(odd){border-left:1px solid var(--asphalt-line)}
+  .pillar:nth-child(odd){border-left:1px solid var(--rule)}
   .pillar:nth-child(4n+1){border-left:0}
 }
 .pillar ul{list-style:none; margin:0; padding:0}
 .pillar li{
   font-size:16px; line-height:1.45; padding:9px 0;
-  border-top:1px solid var(--asphalt-line); color:var(--thermo-dim);
+  border-top:1px solid var(--rule); color:var(--navy-soft);
 }
 .pillar li:first-child{border-top:0}
 
 /* ============ options table ============ */
 .tablewrap{overflow-x:auto; -webkit-overflow-scrolling:touch}
 table{border-collapse:collapse; width:100%; min-width:640px}
-th,td{text-align:left; padding:14px 20px 14px 0; vertical-align:top; border-top:1px solid var(--asphalt-line)}
+th,td{text-align:left; padding:14px 20px 14px 0; vertical-align:top; border-top:1px solid var(--rule)}
 th{
   font-family:var(--mono); font-weight:400; font-size:11px;
-  letter-spacing:.16em; text-transform:uppercase; color:var(--thermo-dim);
+  letter-spacing:.16em; text-transform:uppercase; color:var(--navy-soft);
   border-top:0; padding-bottom:11px;
 }
 td.opt{
   font-family:var(--display); font-stretch:110%; font-weight:700;
   font-size:clamp(15px,1.05vw,18px); text-transform:uppercase; width:32%;
 }
-td.feas{font-family:var(--mono); font-size:13px; color:var(--thermo-dim); white-space:nowrap}
-td.verdict{font-size:16px; color:var(--thermo-dim)}
-tr.lead td.opt{color:var(--lane)}
-tr.lead td.verdict{color:var(--thermo)}
+td.feas{font-family:var(--mono); font-size:13px; color:var(--navy-soft); white-space:nowrap}
+td.verdict{font-size:16px; color:var(--navy-soft)}
+tr.lead td.opt{color:var(--sky-ink)}
+tr.lead td.verdict{color:var(--navy)}
 
 /* ============ closing ============ */
 #close h2{max-width:17ch}
 #close .sig{
   font-family:var(--mono); font-size:12px; letter-spacing:.15em; text-transform:uppercase;
-  color:var(--thermo-dim); margin-top:clamp(26px,3.5vh,40px);
+  color:var(--navy-soft); margin-top:clamp(26px,3.5vh,40px);
 }
 
 /* ============ faq ============ */
 .faq{display:grid; grid-template-columns:1fr; gap:0; margin-top:clamp(26px,3.5vh,40px)}
-.qa{padding:clamp(22px,2.6vh,30px) 0; border-top:1px solid var(--asphalt-line)}
+.qa{padding:clamp(22px,2.6vh,30px) 0; border-top:1px solid var(--rule)}
 .qa:first-child{border-top:0; padding-top:0}
-.qa h4{font-size:clamp(17px,1.4vw,23px); text-transform:none; color:var(--thermo); margin-bottom:12px}
-.qa p{margin:0 0 .9em; max-width:var(--measure); color:var(--thermo-dim)}
+.qa h4{font-size:clamp(17px,1.4vw,23px); text-transform:none; color:var(--navy); margin-bottom:12px}
+.qa p{margin:0 0 .9em; max-width:var(--measure); color:var(--navy-soft)}
 .qa p:last-child{margin-bottom:0}
+
+/* ============ the team ============ */
+#team{background:var(--paper-tint)}
+.team-grid{
+  display:grid; grid-template-columns:repeat(2,1fr);
+  gap:clamp(18px,2.4vw,34px) clamp(14px,1.8vw,26px);
+  margin-top:clamp(28px,3.5vh,44px);
+}
+@media(min-width:720px){.team-grid{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:1040px){.team-grid{grid-template-columns:repeat(4,1fr)}}
+.member figure{margin:0}
+.member img{
+  display:block; width:100%; aspect-ratio:4/5; object-fit:cover;
+  background:var(--rule); border:1px solid var(--rule);
+}
+.member .name{
+  font-family:var(--display); font-stretch:112%; font-weight:700;
+  font-size:clamp(15px,1.15vw,19px); text-transform:uppercase; letter-spacing:-.005em;
+  margin:14px 0 5px; color:var(--navy);
+}
+.member .role{
+  font-family:var(--mono); font-size:12px; letter-spacing:.06em;
+  color:var(--sky-ink); margin:0; line-height:1.4;
+}
+.team-note{
+  font-family:var(--mono); font-size:12px; line-height:1.7;
+  color:var(--navy-soft); margin:clamp(26px,3vh,36px) 0 0; max-width:70ch;
+}
 
 /* ============ sources / about ============ */
 .src-grid{display:grid; grid-template-columns:1fr; gap:clamp(28px,4vw,64px)}
 @media(min-width:900px){.src-grid{grid-template-columns:1fr 1.2fr}}
 .src-list{list-style:none; margin:0; padding:0}
 .src-list li{
-  padding:13px 0; border-top:1px solid var(--asphalt-line);
-  font-family:var(--mono); font-size:13px; line-height:1.7; color:var(--thermo-dim);
+  padding:13px 0; border-top:1px solid var(--rule);
+  font-family:var(--mono); font-size:13px; line-height:1.7; color:var(--navy-soft);
 }
 .src-list li:first-child{border-top:0}
-.src-list li b{color:var(--thermo); font-weight:500}
+.src-list li b{color:var(--navy); font-weight:500}
 
 footer.pagefoot{
-  margin-left:var(--rail);
   padding:clamp(36px,5vh,56px) var(--pad);
   font-family:var(--mono); font-size:12px; line-height:1.8;
-  color:var(--thermo-dim); letter-spacing:.02em;
+  color:var(--navy-soft); letter-spacing:.02em;
 }
 footer.pagefoot .inner{display:flex; gap:12px 40px; flex-wrap:wrap; justify-content:space-between}
 
@@ -345,12 +521,14 @@ footer.pagefoot .inner{display:flex; gap:12px 40px; flex-wrap:wrap; justify-cont
 .hint{
   position:fixed; right:20px; bottom:18px; z-index:90;
   font-family:var(--mono); font-size:11px; letter-spacing:.13em; text-transform:uppercase;
-  color:var(--thermo-dim); background:rgba(22,24,28,.94);
-  border:1px solid var(--asphalt-line); padding:9px 14px;
+  color:var(--navy-soft); background:rgba(255,255,255,.94);
+  border:1px solid var(--rule); padding:9px 14px;
   display:none;
 }
 body.present .hint{display:block}
 body.present .nav{display:none}
+/* the nav is gone in presentation mode, so the hero must not tuck under it */
+body.present #hero{margin-top:0; min-height:100svh}
 body.present .prose,
 body.present [data-present="skip"],
 body.present footer.pagefoot{display:none}
@@ -358,7 +536,7 @@ body.present section{
   min-height:100svh; display:flex; flex-direction:column; justify-content:center;
   padding-top:clamp(48px,7vh,90px); padding-bottom:clamp(48px,7vh,90px);
 }
-body.present h1{font-size:clamp(46px,7.6vw,124px)}
+body.present h1{font-size:clamp(44px,6.2vw,104px)}
 body.present h2{font-size:clamp(30px,4.6vw,68px); max-width:18ch}
 body.present .stat .num{font-size:clamp(76px,11vw,168px)}
 body.present .pullquote q{font-size:clamp(30px,3.6vw,54px)}
@@ -367,50 +545,34 @@ body.present .card p{font-size:clamp(17px,1.25vw,22px)}
 body.present .pillar li{font-size:clamp(15px,1.05vw,18px)}
 body.present td.verdict{font-size:clamp(15px,1.05vw,19px)}
 body.present .eyebrow{font-size:clamp(11px,.8vw,13px)}
-body:not(.present) .rider{display:none}
 
 kbd{
-  font-family:var(--mono); color:var(--thermo);
-  border:1px solid var(--asphalt-line); border-bottom-width:2px;
+  font-family:var(--mono); color:var(--navy);
+  border:1px solid var(--rule); border-bottom-width:2px;
   border-radius:3px; padding:1px 5px; font-size:.92em;
 }
 
 /* ============ a11y ============ */
-:focus-visible{outline:3px solid var(--amber); outline-offset:3px}
+:focus-visible{outline:3px solid var(--sky-ink); outline-offset:3px}
 .skip{
   position:absolute; left:-9999px; top:0; z-index:100;
-  background:var(--amber); color:var(--asphalt); padding:12px 18px;
+  background:var(--navy); color:#fff; padding:12px 18px;
   font-family:var(--mono); font-size:13px;
 }
-.skip:focus{left:var(--rail)}
+.skip:focus{left:0}
 
 @media(max-width:700px){
-  :root{--rail:0px}
-  .rail{display:none}
   h2{max-width:none}
   body.present section{min-height:auto}
 }
 @media(prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
-  .rider{transition:none}
 }
 </style>
 </head>
 <body>
 
 <a class="skip" href="#hero">Skip to content</a>
-
-<div class="rail" aria-hidden="true">
-  <div class="rider" id="rider">
-    <svg viewBox="0 0 34 34" fill="none">
-      <circle cx="17" cy="17" r="16" fill="#00c06a"/>
-      <circle cx="11" cy="22" r="3.6" stroke="#16181c" stroke-width="1.8"/>
-      <circle cx="23" cy="22" r="3.6" stroke="#16181c" stroke-width="1.8"/>
-      <path d="M11 22 L15.5 15 L21 15 M15.5 15 L19 22 M21 15 L23 22" stroke="#16181c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-      <circle cx="21.5" cy="10.5" r="2.2" fill="#16181c"/>
-    </svg>
-  </div>
-</div>
 
 <nav class="nav">
   <a class="wordmark" href="#hero">The Other Half</a>
@@ -419,6 +581,7 @@ kbd{
     <a href="#passed">What passed</a>
     <a href="#proposal">The proposal</a>
     <a href="#faq">FAQ</a>
+    <a href="#team">Team</a>
     <a href="#about">About</a>
     <button class="presentbtn" id="presentBtn" type="button">Present</button>
   </div>
@@ -428,27 +591,118 @@ kbd{
 
 <!-- 1 ------------------------------------------------------------------ -->
 <section id="hero">
-  <div class="inner">
+  <div class="hero-bg" aria-hidden="true">
+    <img src="photos/irvine-aerial.jpg" alt="" fetchpriority="high" decoding="async">
+  </div>
+
+  <div class="hero-inner">
     <p class="eyebrow">E-bike safety in Irvine · A project by Adriana</p>
-    <h1>The<br>Other<br>Half</h1>
+    <h1>The Other<br>Half</h1>
     <p class="deck">Irvine wrote the rules for e-bikes. <em>Nobody has taught the kids how to ride them.</em></p>
-    <div class="prose">
-      <p>I'm Adriana, and I live in Irvine. This page collects the research behind a
-      proposal I'm bringing to the City Council: a small, cheap pilot to close the
-      half of the e-bike safety problem that enforcement can't reach.</p>
-      <p>It's all here — the numbers, what the Council has already done, every option
-      I weighed and why I ruled most of them out. If you only read one section, read
-      <a href="#proposal">the proposal</a>.</p>
-      <div class="herocta">
-        <a class="btn btn-solid" href="#proposal">Read the proposal</a>
-        <a class="btn btn-ghost" href="#problem">Start with the data</a>
-      </div>
+    <div class="herocta" data-present="skip">
+      <a class="btn btn-solid" href="#proposal">Read the proposal</a>
+      <a class="btn btn-ghost" href="#problem">Start with the data</a>
     </div>
     <div class="herometa">
       <span>Irvine, California</span>
       <span>An independent project</span>
       <span>Not affiliated with the City</span>
     </div>
+  </div>
+
+  <p class="hero-credit" data-present="skip">Aerial imagery: USGS, The National Map · public domain</p>
+</section>
+
+<!-- 1b ----------------------------------------------------------------- -->
+<section id="intro" data-present="skip">
+  <div class="inner">
+    <p class="eyebrow">At a glance</p>
+    <p class="lede">I'm Adriana, and I live in Irvine. This page collects the research
+    behind a proposal I'm bringing to the City Council — the whole argument in three
+    cards, and the evidence for all of it below.</p>
+
+    <div class="glance">
+      <div class="glance-card">
+        <div class="k">The problem</div>
+        <h3>A third of bike crashes</h3>
+        <p>More than one in three of Irvine's bicycle collisions involves a 13- to
+        16-year-old riding an e-bike.<a class="ref" href="#src-1">1</a></p>
+      </div>
+      <div class="glance-card">
+        <div class="k">What the city did</div>
+        <h3>Ordinance 26&#8209;05</h3>
+        <p>In January 2026 the Council voted 6&ndash;1 to set speed limits on sidewalks
+        and trails and hold parents accountable.<a class="ref" href="#src-1">1</a><a class="ref" href="#src-2">2</a></p>
+      </div>
+      <div class="glance-card">
+        <div class="k">What's still missing</div>
+        <h3>Nobody teaches it</h3>
+        <p>Enforcement acts after a crash. I'm asking for one school safety pilot and a
+        public crash-reporting map &mdash; <a href="#proposal">the proposal</a>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 1c ----------------------------------------------------------------- -->
+<section id="poster" data-present="skip">
+  <div class="inner">
+    <p class="eyebrow">The campaign poster</p>
+    <h2>Irvine Safe Ride</h2>
+
+    <div class="poster-wrap">
+      <div class="poster-frame">
+        <div class="poster">
+          <img class="photo" src="photos/poster-rider.jpg" alt="Two teenagers beside an e-bike in a driveway, one wearing a helmet.">
+          <div class="scrim-top"></div>
+          <div class="scrim-bottom"></div>
+
+          <div class="header">
+            <div class="eyebrow-row">
+              <div class="dot"></div>
+              <div class="location">CITY OF IRVINE &nbsp;·&nbsp; PUBLIC COMMENT</div>
+            </div>
+            <h1>Every kid on<br>an e-bike deserves<br>to get home <em>safe.</em></h1>
+          </div>
+
+          <div class="footer">
+            <div class="ask-line">We're asking the Council to adopt the e-bike safety ordinance &mdash; helmets on, speeds down, families supported.</div>
+
+            <div class="asks">
+              <div class="ask-card">
+                <div class="ask-num">HELMETS</div>
+                <div class="ask-title">Require helmets</div>
+                <div class="ask-desc">Make helmet use mandatory for riders under 18 on e-bikes, city-wide.</div>
+              </div>
+              <div class="ask-card">
+                <div class="ask-num">SPEED</div>
+                <div class="ask-title">Enforce speed limits</div>
+                <div class="ask-desc">Set and enforce clear speed limits on sidewalks, trails, and neighborhood streets.</div>
+              </div>
+              <div class="ask-card">
+                <div class="ask-num">FAMILIES</div>
+                <div class="ask-title">Support, don't just fine</div>
+                <div class="ask-desc">Pair enforcement with real safety education for riders and parents.</div>
+              </div>
+            </div>
+
+            <div class="bottom-row">
+              <div class="stat">
+                <div class="stat-num">1</div>
+                <div class="stat-label">helmet, worn every ride &mdash; the simplest rule that saves lives.</div>
+              </div>
+              <div class="cta">
+                <div class="cta-label">Presented to the</div>
+                <div class="cta-name">Irvine City Council</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="poster-note">Printed at 1200 &times; 1800. The full-size original is
+    <a href="Irvine%20safe%20ride%20official%20poster!.html">Irvine safe ride official poster!.html</a>.</p>
   </div>
 </section>
 
@@ -459,19 +713,31 @@ kbd{
     <h2>E-bikes arrived faster than anyone taught kids to ride them.</h2>
 
     <div class="stage">
-      <div class="stat-row">
-        <div class="stat">
-          <span class="num">50<small>%</small></span>
-          <p>of all bicycle collisions in Irvine involve riders aged <strong>13 to 16</strong>.</p>
+      <figure class="figure">
+        <div class="figure-head">
+          <p class="bignum">More than<br>1 in 3</p>
+          <p class="bignum-sub">of Irvine's bicycle collisions involve a
+          <strong>13- to 16-year-old riding an e-bike</strong>.</p>
         </div>
-        <div class="stat">
-          <span class="num">69<small>%</small></span>
-          <p>of those collisions involve an <strong>e-bike</strong>.</p>
+
+        <div class="propbar" role="img" aria-label="Of every 100 bicycle collisions in Irvine, 37 involve a 13 to 16 year old on an e-bike, 16 involve a 13 to 16 year old on another bike, and 47 involve all other riders.">
+          <span class="seg seg-a" style="flex:37" title="37 of every 100 — 13 to 16 on an e-bike">37</span>
+          <span class="seg seg-b" style="flex:16" title="16 of every 100 — 13 to 16 on another bike">16</span>
+          <span class="seg seg-c" style="flex:47" title="47 of every 100 — all other riders">47</span>
         </div>
-      </div>
-      <hr class="dash">
-      <p class="cite">Reported to the Irvine City Council by Police Chief Michael Kent during
-      deliberations on the city's e-bike ordinance.</p>
+        <ul class="propkey">
+          <li><i class="sw-a"></i>13&ndash;16 on an e-bike</li>
+          <li><i class="sw-b"></i>13&ndash;16 on another bike</li>
+          <li><i class="sw-c"></i>All other riders</li>
+        </ul>
+
+        <figcaption class="figure-note">Per 100 bicycle collisions in Irvine. The Irvine
+        Police Department's traffic bureau told the City Council that <strong>53%</strong>
+        of the city's bicycle collisions involve riders aged 13 to 16, and that
+        <strong>69%</strong> of those collisions involve an e-bike.<a class="ref" href="#src-1">1</a>
+        53% of 69% works out to roughly 37 in every 100 &mdash; the figure above is that
+        arithmetic, not a separately reported number.</figcaption>
+      </figure>
     </div>
 
     <div class="prose">
@@ -492,11 +758,12 @@ kbd{
       <div class="panel">
         <h3>What the classes mean</h3>
         <p>California sorts e-bikes into three classes, and most people buying one for their
-        kid have never heard of them.</p>
+        kid have never heard of them. These are the Irvine Police Department's own
+        definitions.<a class="ref" href="#src-4">4</a></p>
         <ul class="classlist">
           <li><span class="cname">Class 1</span><span class="cdesc">Pedal-assist only, motor cuts out at 20 mph.</span></li>
           <li><span class="cname">Class 2</span><span class="cdesc">Throttle — it moves without pedaling — capped at 20 mph.</span></li>
-          <li><span class="cname">Class 3</span><span class="cdesc">Pedal-assist up to 28 mph. Age-restricted, and the class most often involved when speed is a factor.</span></li>
+          <li><span class="cname">Class 3</span><span class="cdesc">Pedal-assist up to 28 mph. Riders must be at least 16, and a helmet is required.<a class="ref" href="#src-4">4</a></span></li>
         </ul>
         <p style="margin-top:18px">Plenty of what's sold online outruns all three. A parent
         looking for a reliable way to get their kid to school can end up buying something
@@ -509,6 +776,10 @@ kbd{
       best; almost no working knowledge of traffic law; trails and sidewalks built for walking
       pace absorbing bikes moving three times that fast; and parents buying high-powered bikes
       without knowing what they've bought.</p>
+
+      <p>It isn't a one-year blip either. Across the last three years, roughly 70% of Irvine's
+      bicycle collisions involved a juvenile rider, and about 65% of those involved an
+      e-bike.<a class="ref" href="#src-1">1</a></p>
 
       <p>Underneath all of it is a practical problem: this is genuinely hard to enforce. You
       cannot station an officer at every school gate, and nobody wants a city that tries.</p>
@@ -525,17 +796,17 @@ kbd{
     <div class="stage">
       <div class="two">
         <div>
-          <p class="cite" style="margin:0 0 18px">Amending Division 7 of Title 4 of the Irvine Municipal Code.</p>
+          <p class="cite" style="margin:0 0 18px">Amending Division 7 of Title 4 of the Irvine Municipal Code. First reading 27 January 2026.<a class="ref" href="#src-2">2</a></p>
           <ul class="ord-list">
             <li><span class="mk">Passed</span><span>Speed limits set for sidewalks and trails</span></li>
             <li><span class="mk">Passed</span><span>Parents held accountable for how minors ride</span></li>
-            <li><span class="mk">6&ndash;1</span><span>Advanced by the Council</span></li>
+            <li><span class="mk">6&ndash;1</span><span>Advanced by the Council, January 2026<a class="ref" href="#src-1">1</a></span></li>
           </ul>
         </div>
         <div>
           <blockquote class="pullquote">
-            <q>A full-blown crisis</q>
-            <footer>Mayor Agran, on e-bike safety in Irvine</footer>
+            <q>We're in the midst of a full-blown crisis</q>
+            <footer>Mayor Larry Agran, Irvine City Council, 12 November 2025<a class="ref" href="#src-3">3</a></footer>
           </blockquote>
         </div>
       </div>
@@ -549,7 +820,7 @@ kbd{
       sidewalks and trails, and it made parents answerable for how their children ride — which
       matters, because parents are the ones buying the bikes.</p>
 
-      <p>It wasn't unanimous. Councilmember Carroll cast the lone no vote, objecting to the
+      <p>It wasn't unanimous. Councilmember Mike Carroll cast the lone no vote, objecting to the
       sidewalk speed limits. That objection is worth taking seriously rather than waving away:
       rules aimed at minors can slide into over-policing kids, and a speed limit on a sidewalk
       is only as good as the judgment of whoever enforces it. It's part of why the proposal
@@ -624,9 +895,10 @@ kbd{
       <h3>Why a workshop, and what's in it</h3>
       <p>One school, one term, taught in a slot that already exists rather than a new program
       built from nothing: right-of-way, stopping distance at speed, where you can and can't
-      ride, and how to fit a helmet so it does something. California already requires minors
-      who get cited to complete a CHP safety course. That rule is sound — it just arrives too
-      late. This is the same content, delivered before the citation instead of after it.</p>
+      ride, and how to fit a helmet so it does something. Under AB 544, a minor cited for riding
+      without a helmet can now satisfy the safety-course requirement with the CHP's online e-bike
+      training program.<a class="ref" href="#src-5">5</a> That rule is sound — it just arrives
+      after the citation. This is the same content, delivered before one.</p>
 
       <h3>Why a map</h3>
       <p>The city is making road-safety decisions without knowing where the near-misses happen,
@@ -712,7 +984,7 @@ kbd{
             <tr><td class="opt">Helmet incentives</td><td class="feas">High</td><td class="verdict">Supporting pillar, not the headline — it doesn't touch speed or road design.</td></tr>
             <tr><td class="opt">Protected infrastructure</td><td class="feas">Medium&ndash;low, near term</td><td class="verdict">Phase two. Study and pilot one corridor, not a citywide overhaul.</td></tr>
             <tr><td class="opt">Stronger enforcement</td><td class="feas">Already done</td><td class="verdict">26&#8209;05 covers it. Re-proposing it wastes the three minutes.</td></tr>
-            <tr><td class="opt">Ban high-powered e-bikes for minors</td><td class="feas">Low</td><td class="verdict">State classification law preempts a local ban. Ask for dealer disclosure at point of sale instead.</td></tr>
+            <tr><td class="opt">Ban high-powered e-bikes for minors</td><td class="feas">Low</td><td class="verdict">State law defines e-bike classes and equipment, so a local ban would likely conflict with it. Ask for dealer disclosure at point of sale instead.</td></tr>
           </tbody>
         </table>
       </div>
@@ -734,7 +1006,7 @@ kbd{
 <section id="close">
   <div class="inner">
     <p class="eyebrow">What I'm asking for</p>
-    <h2>Lead on the other half: not just <span style="color:var(--lane)">enforcing</span> safety, but <span style="color:var(--lane)">teaching</span> it.</h2>
+    <h2>Lead on the other half: not just <span style="color:var(--sky)">enforcing</span> safety, but <span style="color:var(--sky)">teaching</span> it.</h2>
     <div class="prose">
       <p>Irvine has already shown it's willing to lead on e-bike safety. The ordinance proved
       that. The next step costs a fraction of what's already been spent, and it reaches kids
@@ -791,6 +1063,101 @@ kbd{
   </div>
 </section>
 
+<!-- 11 ----------------------------------------------------------------- -->
+<section id="team" data-present="skip">
+  <div class="inner">
+    <p class="eyebrow">The people behind it</p>
+    <h2>Meet the team</h2>
+
+    <div class="team-grid">
+        <div class="member">
+          <figure>
+            <img src="photos/team/person-7.jpg" alt="Portrait of Adriana Lee" loading="lazy"
+                 style="object-position:50% 30%">
+            <figcaption>
+              <p class="name">Adriana Lee</p>
+              <p class="role">Founder</p>
+            </figcaption>
+          </figure>
+        </div>
+        <div class="member">
+          <figure>
+            <img src="photos/team/person-8.jpg" alt="Portrait of Denes Garda" loading="lazy"
+                 style="object-position:50% 33%">
+            <figcaption>
+              <p class="name">Denes Garda</p>
+              <p class="role">Webmaster</p>
+            </figcaption>
+          </figure>
+        </div>
+        <div class="member">
+          <figure>
+            <img src="photos/team/person-1.jpg" alt="Portrait of Kailen Lee" loading="lazy"
+                 style="object-position:50% 30%">
+            <figcaption>
+              <p class="name">Kailen Lee</p>
+              <p class="role">Outreach Officer</p>
+            </figcaption>
+          </figure>
+        </div>
+        <div class="member">
+          <figure>
+            <img src="photos/team/person-2.jpg" alt="Portrait of Jia Yoon" loading="lazy"
+                 style="object-position:50% 38%">
+            <figcaption>
+              <p class="name">Jia Yoon</p>
+              <p class="role">Research &amp; Data</p>
+            </figcaption>
+          </figure>
+        </div>
+        <div class="member">
+          <figure>
+            <img src="photos/team/person-3.jpg" alt="Portrait of Harrison Nguyen" loading="lazy"
+                 style="object-position:50% 38%">
+            <figcaption>
+              <p class="name">Harrison Nguyen</p>
+              <p class="role">Writing &amp; Research</p>
+            </figcaption>
+          </figure>
+        </div>
+        <div class="member">
+          <figure>
+            <img src="photos/team/person-4.jpg" alt="Portrait of Alex Lin" loading="lazy"
+                 style="object-position:50% 8%">
+            <figcaption>
+              <p class="name">Alex Lin</p>
+              <p class="role">Treasurer</p>
+            </figcaption>
+          </figure>
+        </div>
+        <div class="member">
+          <figure>
+            <img src="photos/team/person-5.jpg" alt="Portrait of Caroline Lu" loading="lazy"
+                 style="object-position:50% 40%">
+            <figcaption>
+              <p class="name">Caroline Lu</p>
+              <p class="role">External Affairs</p>
+            </figcaption>
+          </figure>
+        </div>
+        <div class="member">
+          <figure>
+            <img src="photos/team/person-6.jpg" alt="Portrait of Sophia Nagel" loading="lazy"
+                 style="object-position:50% 40%">
+            <figcaption>
+              <p class="name">Sophia Nagel</p>
+              <p class="role">Marketing</p>
+            </figcaption>
+          </figure>
+        </div>
+    </div>
+
+    <p class="team-note">Photos live in <code>photos/team/</code> &mdash; swap a file to
+    swap a face, and nudge <code>object-position</code> on an image if a crop sits too
+    high or low.</p>
+  </div>
+</section>
+
 <!-- 10 ----------------------------------------------------------------- -->
 <section id="about" data-present="skip">
   <div class="inner">
@@ -799,23 +1166,60 @@ kbd{
     <div class="src-grid" style="margin-top:clamp(26px,3.5vh,40px)">
       <div>
         <h3>Why I built this</h3>
-        <p style="max-width:46ch">I've watched e-bikes become both a lifeline and a liability
-        on Irvine's streets — near our schools, and on the trails our families use every
-        weekend. This is my own research, gathered on my own time, and this page is where I
-        keep it.</p>
-        <p style="max-width:46ch">It isn't a campaign and it isn't an organization. It's one
-        resident with a proposal, and a page so that anyone can check the reasoning behind it.</p>
-        <p class="footnote">Not affiliated with the City of Irvine, IUSD, or any organization.
-        Get in touch: <a href="mailto:you@example.com">you@example.com</a>.</p>
+        <p style="max-width:46ch">My name is Adriana Lee. I'm a second-year student at Irvine
+        Valley College and I live in Irvine.</p>
+        <p style="max-width:46ch">This started on my own street. A child was hit by a car while
+        out riding with no adult around. I have younger siblings who ride, and after that I
+        started paying closer attention to how kids actually get around this city, and how much
+        of it is left to chance.</p>
+        <p style="max-width:46ch">Irvine Police Department data says the same thing. Riders aged
+        13 to 16 account for 53% of the city's bicycle collisions, and 69% of those collisions
+        involve an e-bike.<a class="ref" href="#src-1">1</a></p>
+        <p style="max-width:46ch">So I started Irvine Safe Ride, an independent community
+        initiative. It runs on a one-page proposal with three parts: protected bike lanes along
+        the busiest school routes, a required safety course for riders under 16 run with IUSD,
+        and quarterly public reporting of e-bike collision data. I've also made outreach
+        materials aimed at younger teenagers, since they're the group least likely to see
+        anything the city currently publishes.</p>
+        <p class="footnote">Irvine Safe Ride is independent. It isn't affiliated with the City
+        of Irvine or IUSD. Get in touch: <a href="mailto:you@example.com">you@example.com</a>.</p>
       </div>
       <div>
         <h3>Sources</h3>
-        <ul class="src-list" style="margin-top:16px">
-          <li><b>Collision statistics</b> — Irvine Police Chief Michael Kent, in testimony to the Irvine City Council on e-bike safety.</li>
-          <li><b>Ordinance No. 26&#8209;05</b> — Irvine City Council, amending Division 7 of Title 4 of the Irvine Municipal Code; advanced 6&ndash;1.</li>
-          <li><b>&ldquo;A full-blown crisis&rdquo;</b> — Mayor Agran, during Council deliberations.</li>
-          <li><b>Dissent</b> — Councilmember Carroll cast the lone no vote, objecting to sidewalk speed limits.</li>
-          <li><b>State law</b> — California requires cited minors to complete a CHP safety course; e-bike class definitions are set in state vehicle code.</li>
+        <ul class="src-list">
+          <li id="src-1"><b>1 &mdash; Collision figures, the 6&ndash;1 vote, the dissent.</b>
+          Lt. Shaheen Jahangard of the Irvine Police Department traffic bureau told the City
+          Council that 13- to 16-year-olds are involved in 53% of the city's bicycle collisions
+          and that 69% of those involve an e-bike; over three years, about 70% of bicycle
+          collisions involved a juvenile rider and about 65% of those an e-bike. Reported in
+          <a href="https://voiceofoc.org/2026/02/irvine-cracks-down-on-reckless-e-bike-riding-parents-to-be-held-accountable/">Voice of OC,
+          &ldquo;Irvine Cracks Down on Reckless E-bike Riding, Parents to be Held Accountable,&rdquo;
+          2 February 2026</a>.</li>
+
+          <li id="src-2"><b>2 &mdash; Ordinance No. 26&#8209;05.</b> Amends Division 7 of Title 4
+          of the Irvine Municipal Code, covering bicycles and electric bicycles. First reading
+          27 January 2026; returned to the Council 10 February 2026.
+          <a href="https://irvine.granicus.com/MetaViewer.php?view_id=&amp;event_id=2774&amp;meta_id=180549">City
+          of Irvine staff report, Request for City Council Action</a>.</li>
+
+          <li id="src-3"><b>3 &mdash; &ldquo;A full-blown crisis.&rdquo;</b> Mayor Larry Agran at
+          the Irvine City Council meeting of 12 November 2025: &ldquo;We're in the midst of a
+          full-blown crisis that is not soon to go away.&rdquo; Police Chief Michael Kent also
+          addressed the Council at that meeting. Reported in
+          <a href="https://voiceofoc.org/2025/12/more-orange-county-cities-grapple-with-e-bike-regulations-youth-safety/">Voice of OC,
+          &ldquo;More Orange County Cities Grapple With E-bike Regulations, Youth Safety,&rdquo;
+          3 December 2025</a>.</li>
+
+          <li id="src-4"><b>4 &mdash; E-bike classes and helmet rules.</b> Irvine Police
+          Department, <a href="https://irvinepd.gov/2025/12/06/ebikes-in-irvine-a-user-guide-for-parents-and-riders/">&ldquo;E-bikes
+          in Irvine: A User Guide for Parents and Riders&rdquo;</a>.</li>
+
+          <li id="src-5"><b>5 &mdash; The CHP safety course.</b> AB 544, effective 1 January 2026,
+          &ldquo;allows the CHP-developed online electric bicycle safety and training program to
+          fulfill the safety course requirement for minors who receive a helmet violation
+          involving electric bicycles.&rdquo;
+          <a href="https://www.chp.ca.gov/news-alerts/news-list/new-year-new-laws--chp-highlights-public-safety-laws-taking-effect-in-2026/">California
+          Highway Patrol, &ldquo;New Year, New Laws&rdquo;</a>.</li>
         </ul>
       </div>
     </div>
@@ -838,7 +1242,6 @@ kbd{
   var body    = document.body;
   var btn     = document.getElementById('presentBtn');
   var hint    = document.getElementById('hint');
-  var rider   = document.getElementById('rider');
   var reduce  = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // In presentation mode we step through the argument only; FAQ, about and the
@@ -854,7 +1257,7 @@ kbd{
     body.classList.toggle('present', on);
     if (btn) btn.textContent = on ? 'Exit' : 'Present';
     if (on) goTo(currentIndex());
-    updateRider();
+    updateNav();
   }
 
   function currentIndex(){
@@ -870,14 +1273,6 @@ kbd{
     var list = slides();
     i = Math.max(0, Math.min(list.length - 1, i));
     list[i].scrollIntoView({behavior: reduce ? 'auto' : 'smooth', block: 'start'});
-  }
-
-  // The rider tracks read progress through the whole page, presenting or not.
-  function updateRider(){
-    if (!rider) return;
-    var max = document.documentElement.scrollHeight - window.innerHeight;
-    var pct = max > 0 ? Math.min(1, Math.max(0, window.pageYOffset / max)) : 0;
-    rider.style.transform = 'translateY(' + (6 + pct * 88) + 'vh)';
   }
 
   if (btn) btn.addEventListener('click', function(){ setPresenting(!isPresenting()); });
@@ -909,9 +1304,28 @@ kbd{
     }
   });
 
-  window.addEventListener('scroll', updateRider, {passive:true});
-  window.addEventListener('resize', updateRider);
-  updateRider();
+  var nav  = document.querySelector('.nav');
+  var hero = document.getElementById('hero');
+  function updateNav(){
+    if (!nav || !hero) return;
+    var overHero = !isPresenting() &&
+      window.pageYOffset < hero.offsetHeight - nav.offsetHeight;
+    nav.classList.toggle('nav--over', overHero);
+  }
+
+  // Scale the poster to whatever width its frame ends up with.
+  var posterFrame = document.querySelector('.poster-frame');
+  var posterEl    = document.querySelector('.poster');
+  function updatePoster(){
+    if (!posterFrame || !posterEl) return;
+    posterEl.style.setProperty('--poster-scale', posterFrame.clientWidth / 1200);
+  }
+
+  function onScroll(){ updateNav(); }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  window.addEventListener('resize', function(){ onScroll(); updatePoster(); });
+  onScroll();
+  updatePoster();
 })();
 </script>
 
